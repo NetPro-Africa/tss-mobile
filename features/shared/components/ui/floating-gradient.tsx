@@ -15,7 +15,9 @@ export const FloatingGradient = () => {
       end={{ x: 0, y: 1 }}
       style={styles.container}
     >
-      <BoldText>Welcome to Skoolhost</BoldText>
+      <BoldText style={{ textAlign: 'center', marginBottom: 10 }}>
+        Welcome to Skoolhost
+      </BoldText>
       <NormalText style={styles.text}>
         Everything your school in one digital space for easy management
       </NormalText>

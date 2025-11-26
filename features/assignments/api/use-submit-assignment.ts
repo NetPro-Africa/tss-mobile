@@ -17,7 +17,7 @@ export const useSubmitAssignment = () => {
       queryClient.invalidateQueries({ queryKey: ['tests'] });
     },
     onError: (error) => {
-      console.log(error.message);
+      console.log(error.message, error);
 
       toast(`Failed to submit assignment, Please try again later`, 'error');
     },

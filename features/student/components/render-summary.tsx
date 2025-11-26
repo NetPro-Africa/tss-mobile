@@ -28,28 +28,22 @@ type Props = {
 export const RenderSummary = ({ item, navigate }: Props) => {
   const monthDay = format(item.date1, 'MMM');
   const day = format(item.date1, 'd');
-  console.log({ item });
 
   const colorScheme = useColorScheme();
   const iconColor = Colors[colorScheme ?? 'light'].icon;
   const onPress = () => {
     if (!navigate) return;
     router.push(
-      `/assignment-detail?testid=${item.testid}&date1=${format(item.date1, 'PP')}&date2=${format(item.date2, 'PP')}`
+      `/assignment-detail?testid=${item.testid}&date1=${format(item.date1, 'PP')}&date2=${format(item.date2, 'PP HH:mm')}`
     );
   };
   return (
     <CustomPressable onPress={onPress}>
-      <Card style={{ backgroundColor: 'transparent' }}>
-        <CardContent style={{ backgroundColor: 'transparent' }}>
+      <Card style={{}}>
+        <CardContent style={{}}>
           <CardHeader>
-            <Stack
-              direction="row"
-              gap={10}
-              alignItems="center"
-              backgroundColor="transparent"
-            >
-              <Stack backgroundColor="transparent">
+            <Stack direction="row" gap={10} alignItems="center">
+              <Stack>
                 <NormalText>{monthDay}</NormalText>
                 <MediumText style={styles.day}>{day}</MediumText>
               </Stack>

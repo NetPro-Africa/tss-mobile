@@ -22,8 +22,7 @@ import { Answer, QuestionType, SubmitAssignmentType } from '../types';
 import { FlexText } from '@/features/shared/components/flex-text';
 import { toast } from '@/features/shared/utils';
 import { savePDFToDevice } from '@/features/student/utils';
-import { useRef, useState } from 'react';
-import { captureRef } from 'react-native-view-shot';
+import { useState } from 'react';
 type RenderResultProps = {
   data: SubmitAssignmentType;
   finalAnswers: Answer[];
@@ -34,7 +33,6 @@ export const RenderResult = ({
   finalAnswers,
   questions,
 }: RenderResultProps) => {
-  console.log({ finalAnswers });
   const colorScheme = useColorScheme() ?? 'light';
   const questionColor = Colors[colorScheme].question;
   const formattedQuestions = questions.map((q) => ({
@@ -45,49 +43,251 @@ export const RenderResult = ({
     question: q.question,
     answer: 'Option' + ' ' + q.answer,
   }));
-  console.log({ formattedQuestions, questions });
+
   const [isLoading, setIsLoading] = useState(false);
-  const contentRef = useRef(null);
+
   const exportViewToPDF = async () => {
     try {
       setIsLoading(true);
 
-      if (!contentRef.current) {
-        Alert.alert('Error', 'Content reference not found');
-        return;
-      }
-
-      // Capture the view as image
-      const imageUri = await captureRef(contentRef.current, {
-        format: 'png',
-        quality: 1.0,
-        result: 'tmpfile',
-      });
-
       // Convert image to PDF
       const htmlContent = `
-              <html>
-                <head>
-                  <meta charset="utf-8">
-                  <style>
-                    body {
-                      margin: 0;
-                      padding: 20px;
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                      min-height: 100vh;
-                    }
-                    img {
-                      max-width: 100%;
-                      height: auto;
-                    }
-                  </style>
-                </head>
-                <body>
-                  <img src="${imageUri}" alt="Captured Content" />
-                </body>
-              </html>
+           
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Result</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+          
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .header-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .header-label {
+            font-weight: 500;
+            color: #495057;
+            font-size: 14px;
+        }
+
+        .header-value {
+            color: #212529;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .score-section {
+            margin-bottom: 30px;
+        }
+
+        .score-title {
+            color: #4285f4;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .question-item {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        .question-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .question-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 10px;
+        }
+
+        .answer-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .answer-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .status-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .status-icon.correct {
+            background-color: #4285f4;
+        }
+
+        .status-icon.incorrect {
+            background-color: #ea4335;
+        }
+
+        .answer-text {
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .correct-answer {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #f1f3f4;
+        }
+
+        .correct-answer-label {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+  <div class='container'>
+  <div class='header'>
+   <div class='header-row'>
+        <p class='header-label'>Name</p>
+        <p class='header-value'>${data.studentName}</p>
+      </div>
+   <div class='header-row'>
+        <p class='header-label'>Class</p>
+        <p class='header-value'>${data.classname}</p>
+      </div>
+   <div class='header-row'>
+        <p class='header-label'>Session</p>
+        <p class='header-value'>${data.session}</p>
+      </div>
+   <div class='header-row'>
+        <p class='header-label'>Attempted</p>
+        <p class='header-value'>${data.attempted}</p>
+      </div>
+   <div class='header-row'>
+        <p class='header-label'>Correct</p>
+        <p class='header-value'>${data.correct}</p>
+      </div>
+   <div class='header-row'>
+        <p class='header-label'>Summary</p>
+        <p class='header-value'>${data.scoreSummary}</p>
+      </div>
+   <div class='header-row'>
+        <p class='header-label'>Total questions</p>
+        <p class='header-value'>${data.totalQuestions}</p>
+      </div>
+  </div>
+  <div class='content'>
+    <div class='score-section'>
+      <p class='score-title'>Your score</p>
+      <p class='score-value'> ${data.correct} of ${data.totalQuestions} answered correctly </p>
+    </div>
+    <div>
+     ${formattedQuestions
+       .map((item, i) => {
+         const selectedAnswerData = finalAnswers.find(
+           (q) => q.numberz === item.numberz
+         );
+
+         // Get the selected answer text
+         const selectedAnswer = selectedAnswerData?.yourAnswer
+           ? // @ts-ignore
+             item[selectedAnswerData.yourAnswer]
+           : null;
+
+         // Get the correct answer text
+         // @ts-ignore
+         const correctAnswer = item[item.answer];
+
+         // Check if answer is correct
+         const isCorrect = selectedAnswer === correctAnswer;
+
+         return `
+      <div class='question-item'>
+        <p class='question-title'>${item.numberz}. ${item.question}</p>
+        <div class='answer-row'>
+          <div class="status-icon ${isCorrect ? 'correct' : 'incorrect'}">
+            ${isCorrect ? '✓' : '✗'}
+          </div>
+          ${selectedAnswer ? `<div class="answer-text">${selectedAnswer}</div>` : '<div class="answer-text">No answer selected</div>'}
+        </div>
+        ${
+          !isCorrect && correctAnswer
+            ? `
+                <div class="correct-answer">
+                  <div class="correct-answer-label">Correct answer:</div>
+                  <div class="answer-row">
+                    <div class="status-icon correct">✓</div>
+                    <div class="answer-text">${correctAnswer}</div>
+                  </div>
+                </div>
+              `
+            : ''
+        }
+      </div>
+    `;
+       })
+       .join('')}
+    </div>
+  </div>
+      
+
+  </div>
+</body>
+</html>
             `;
 
       const { uri } = await Print.printToFileAsync({
@@ -97,7 +297,7 @@ export const RenderResult = ({
         height: 792,
       });
 
-      await savePDFToDevice(uri, 'assignment.pdf');
+      await savePDFToDevice(uri, `assignment.pdf`);
       toast('Downloaded successfully', 'success');
     } catch (error) {
       console.error('Error exporting view to PDF:', error);
@@ -109,7 +309,7 @@ export const RenderResult = ({
 
   return (
     <>
-      <View ref={contentRef} collapsable={false}>
+      <View>
         <Card>
           <CardContent>
             <CardHeader style={{ flexDirection: 'column', gap: 10 }}>

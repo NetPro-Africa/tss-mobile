@@ -395,7 +395,7 @@ export const RenderResultSheet = ({ data }: Props) => {
         height: 792,
       });
 
-      await savePDFToDevice(uri, 'sample-document.pdf');
+      await savePDFToDevice(uri, 'result_sheet.pdf');
       toast('PDF saved to device', 'success');
     } catch (error) {
       console.error('Error generating PDF:', error);

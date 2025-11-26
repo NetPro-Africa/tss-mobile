@@ -115,10 +115,10 @@ export const AssignmentComponent = ({
       ) : (
         <>
           <Animated.View
-            key={currentQuestion.numberz}
+            key={currentQuestion?.numberz}
             entering={SlideInLeft.springify().mass(0.5).stiffness(100)}
           >
-            <MediumText>{currentQuestion.question}</MediumText>
+            <MediumText>{currentQuestion?.question}</MediumText>
             <NormalText
               style={[styles.questionNumber, { color: questionColor }]}
             >

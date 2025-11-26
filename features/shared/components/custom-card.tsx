@@ -81,11 +81,6 @@ export const CardFooter = ({ children, style }: CardFooterProps) => (
 const styles = StyleSheet.create({
   card: {
     borderRadius: 8,
-    elevation: 4, // Shadow for Android
-    shadowColor: '#000', // Shadow for iOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
     marginVertical: width * 0.01,
     padding: 5,
   },

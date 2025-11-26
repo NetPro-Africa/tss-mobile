@@ -45,17 +45,15 @@ export const MediumText = ({
 
 const styles = StyleSheet.create({
   bold: {
-    fontSize: RFValue(20),
+    fontSize: RFValue(15),
     fontFamily: 'PublicSansBold',
   },
   normal: {
-    fontWeight: '400',
-    fontSize: RFValue(12),
+    fontSize: RFValue(11),
     fontFamily: 'PublicSansRegular',
   },
   medium: {
-    fontWeight: '500',
-    fontSize: RFValue(18),
+    fontSize: RFValue(13),
     fontFamily: 'PublicSansMedium',
   },
 });

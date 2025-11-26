@@ -30,22 +30,18 @@ export const submitAssignments = async ({
 }: SubmitAssignmentsType) => {
   console.log({ answers, testid, regnum, token });
 
-  try {
-    const { data } = await axios.post<SubmitAssignmentResponseType>(
-      `${baseUrl}parents/test/submit`,
-      {
-        regnum,
-        testid,
-        answers,
+  const { data } = await axios.post<SubmitAssignmentResponseType>(
+    `${baseUrl}parents/test/submit`,
+    {
+      regnum,
+      testid,
+      answers,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return data;
-  } catch (error) {
-    throw new Error(`${error}`);
-  }
+    }
+  );
+  return data;
 };

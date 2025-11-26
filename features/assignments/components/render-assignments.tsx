@@ -22,7 +22,7 @@ export const RenderAssignments = ({ data }: Props) => {
   }>();
   const [showResult, setShowResult] = useState(false);
   const [finalAnswers, setFinalAnswers] = useState<Answer[]>([]);
-  const [questions] = useState<QuestionType[]>(data.questions);
+  const [questions] = useState<QuestionType[]>(data?.questions);
 
   const student = useStudent((state) => state.student);
 
@@ -32,7 +32,7 @@ export const RenderAssignments = ({ data }: Props) => {
       {
         answers,
         regnum: student?.regnum as string,
-        testid: data.testid,
+        testid: data?.testid,
       },
       {
         onSuccess: () => {

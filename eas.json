@@ -18,7 +18,10 @@
     },
     "production": {
       "autoIncrement": true,
-      "channel": "production"
+      "channel": "production",
+      "env": {
+        "EXPO_PUBLIC_BASE_URL": "https://app.tss.sch.ng/api/"
+      }
     }
   },
   "submit": {

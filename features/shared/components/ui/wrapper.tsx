@@ -16,3 +16,7 @@ export const Wrapper = ({ children, style }: PropsWithChildren<Props>) => {
     </View>
   );
 };
+
+export const ResponsiveWrapper = ({ children }: PropsWithChildren) => {
+  return <View className="flex-1 max-w-5xl mx-auto">{children}</View>;
+};
