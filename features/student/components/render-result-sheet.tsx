@@ -1,12 +1,12 @@
 import { NormalButton } from '@/features/shared/components/normal-button';
 import { NormalText } from '@/features/shared/components/typography';
 import { Stack } from '@/features/shared/components/ui/stack';
-import { toast } from '@/features/shared/utils';
 import { Image } from 'expo-image';
 import { printToFileAsync } from 'expo-print';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { toast } from 'sonner-native';
 import { ResultSheetType } from '../types';
 import { getGrade, getLetterGrade, savePDFToDevice } from '../utils';
 import { RenderComment } from './render-comments';
@@ -396,10 +396,10 @@ export const RenderResultSheet = ({ data }: Props) => {
       });
 
       await savePDFToDevice(uri, 'result_sheet.pdf');
-      toast('PDF saved to device', 'success');
+      toast.success('PDF saved to device');
     } catch (error) {
       console.error('Error generating PDF:', error);
-      toast('Error, Failed to generate PDF. Please try again.', 'error');
+      toast.error('Error, Failed to generate PDF. Please try again.');
     } finally {
       setIsLoading(false);
     }

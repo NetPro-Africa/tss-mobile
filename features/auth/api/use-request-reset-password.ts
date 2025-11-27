@@ -1,4 +1,4 @@
-import { toast } from '@/features/shared/utils';
+import { toast } from 'sonner-native';
 import { useMutation } from '@tanstack/react-query';
 import { requestPasswordReset } from '../services';
 
@@ -9,15 +9,15 @@ export const useRequestPasswordReset = () => {
       return data;
     },
     onSuccess: (data) => {
-      toast(data.message, 'success');
+      toast.success(data.message);
     },
     onError: (error) => {
       console.log(error.message);
 
       if (error.message === 'Request failed with status code 404') {
-        toast(`Email not found, Please try a different email`, 'error');
+        toast.error(`Email not found, Please try a different email`);
       } else {
-        toast(`An error occurred, Please try again later`, 'error');
+        toast.error(`An error occurred, Please try again later`);
       }
     },
   });

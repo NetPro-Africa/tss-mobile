@@ -13,7 +13,7 @@ export const useFirstTime = create<Store>()(
     (set) => ({
       isFirstTime: true,
       setFirstTime: () => {
-        set({ isFirstTime: true });
+        set({ isFirstTime: false });
       },
     }),
     { name: 'isFirstTime', storage: createJSONStorage(() => AsyncStorage) }

@@ -2,11 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { User } from '../types';
+import { ParentType } from '../types';
 
 type Store = {
-  user: User | null;
-  getUser: (user: User) => void;
+  user: ParentType | null;
+  getUser: (user: ParentType) => void;
   clearUser: () => void;
 };
 

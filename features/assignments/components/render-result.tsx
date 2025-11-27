@@ -20,7 +20,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { Answer, QuestionType, SubmitAssignmentType } from '../types';
 
 import { FlexText } from '@/features/shared/components/flex-text';
-import { toast } from '@/features/shared/utils';
+import { toast } from 'sonner-native';
 import { savePDFToDevice } from '@/features/student/utils';
 import { useState } from 'react';
 type RenderResultProps = {
@@ -298,7 +298,7 @@ export const RenderResult = ({
       });
 
       await savePDFToDevice(uri, `assignment.pdf`);
-      toast('Downloaded successfully', 'success');
+      toast.success('Downloaded successfully');
     } catch (error) {
       console.error('Error exporting view to PDF:', error);
       Alert.alert('Error', 'Failed to export view as PDF. Please try again.');

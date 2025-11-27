@@ -1,19 +1,21 @@
+import { useAuth } from '@/features/shared/store/use-auth';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { toast } from 'sonner-native';
-import { login } from '../services';
-import { LoginType } from '../types';
+import { verifyLoginOtp } from '../services';
+import { VerifyOtpType } from '../types';
 
-export const useLogin = () => {
+export const useVerifyLoginOtp = () => {
+  const getUser = useAuth((state) => state.getUser);
   return useMutation({
-    mutationFn: async ({ email, password }: LoginType) => {
-      return await login({ email, password });
+    mutationFn: async ({ email, otp }: VerifyOtpType) => {
+      return await verifyLoginOtp({ email, otp });
     },
     onSuccess: (data) => {
       toast.success('Success', {
         description: data.message,
       });
-      // @ts-ignore
+      getUser(data.data);
     },
     onError: (error) => {
       if (isAxiosError(error)) {

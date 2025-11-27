@@ -1,5 +1,5 @@
 import { useAuth } from '@/features/shared/store/use-auth';
-import { toast } from '@/features/shared/utils';
+import { toast } from 'sonner-native';
 import { useMutation } from '@tanstack/react-query';
 import { deleteAccount } from '../services';
 
@@ -14,10 +14,10 @@ export const useDeleteAccount = () => {
     onSuccess: (data) => {
       clearUser();
 
-      toast(`Account deleted`, 'success');
+      toast.success(`Account deleted`);
     },
     onError: (error) => {
-      toast(`An error occurred, Please try again later`, 'error');
+      toast.error(`An error occurred, Please try again later`);
     },
   });
 };

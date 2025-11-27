@@ -4,7 +4,7 @@ import { Stack } from '@/features/shared/components/ui/stack';
 import { colors } from '@/features/shared/constants';
 import { Feather } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -29,10 +29,11 @@ export const LoginForm = () => {
     resolver: zodResolver(loginSchema),
   });
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
-    console.log(values);
-
     await mutateAsync(values, {
       onSuccess: () => {
+        router.push(
+          `/verify-login-otp?email=${values.email}&password=${values.password}`
+        );
         reset();
       },
     });

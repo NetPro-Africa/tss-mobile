@@ -1,5 +1,5 @@
 import { useAuth } from '@/features/shared/store/use-auth';
-import { toast } from '@/features/shared/utils';
+import { toast } from 'sonner-native';
 import { useMutation } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { updateProfile } from '../services';
@@ -19,13 +19,13 @@ export const useUpdateProfile = () => {
       const { address, city, phone, profesion, states, address2 } = data.data;
       getUser({ ...user, city, address, phone, profesion, states, address2 });
 
-      toast(`Profile updated`, 'success');
+      toast.success(`Profile updated`);
       router.replace('/profile');
     },
     onError: (error) => {
       console.log(error.message);
 
-      toast(`An error occurred, Please try again later`, 'error');
+      toast.error(`An error occurred, Please try again later`);
     },
   });
 };

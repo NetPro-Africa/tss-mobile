@@ -1,4 +1,4 @@
-import { toast } from '@/features/shared/utils';
+import { toast } from 'sonner-native';
 import { useMutation } from '@tanstack/react-query';
 import { verifyOtp } from '../services';
 import { VerifyOtpType } from '../types';
@@ -11,14 +11,14 @@ export const useVerifyOtp = () => {
     },
     onSuccess: (data) => {
       if (data.message === 'OTP verified') {
-        toast('Otp verified successfully', 'success');
+        toast.success('Otp verified successfully');
       }
     },
     onError: (error) => {
       if (error.message === 'Request failed with status code 401') {
-        toast(`Invalid credentials`, 'error');
+        toast.error(`Invalid credentials`);
       } else {
-        toast(`An error occurred, Please try again later`, 'error');
+        toast.error(`An error occurred, Please try again later`);
       }
     },
   });

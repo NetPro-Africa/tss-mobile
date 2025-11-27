@@ -1,4 +1,3 @@
-import { ToastProviderWithViewport } from '@/components/toast';
 import { useAuth } from '@/features/shared/store/use-auth';
 import { useTheme } from '@/features/shared/store/useTheme';
 import '@/global.css'; // Ensure global styles are imported
@@ -21,8 +20,9 @@ import { StatusBar } from 'expo-status-bar';
 import * as Updates from 'expo-updates';
 import { useEffect } from 'react';
 import { Appearance } from 'react-native';
-import 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
+import { Toaster } from 'sonner-native';
 const queryClient = new QueryClient();
 SplashScreen.preventAutoHideAsync();
 onlineManager.setEventListener((setOnline) => {
@@ -78,7 +78,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <QueryClientProvider client={queryClient}>
-        <ToastProviderWithViewport>
+        <GestureHandlerRootView style={{ flex: 1 }}>
           <Stack>
             <Stack.Protected guard={isLoggedIn}>
               <Stack.Screen
@@ -90,7 +90,8 @@ export default function RootLayout() {
               <Stack.Screen name="(public)" options={{ headerShown: false }} />
             </Stack.Protected>
           </Stack>
-        </ToastProviderWithViewport>
+          <Toaster position="top-center" />
+        </GestureHandlerRootView>
       </QueryClientProvider>
       <StatusBar style="auto" />
     </ThemeProvider>

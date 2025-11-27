@@ -1,5 +1,11 @@
 import { OTPInput, type OTPInputRef, type SlotProps } from 'input-otp-native';
-import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+  type ViewStyle,
+} from 'react-native';
 
 import { useEffect, useRef } from 'react';
 
@@ -33,17 +39,23 @@ export const AppleOTPInput = ({ maxLength = 4, onComplete }: Props) => {
       render={({ slots }) => (
         <View style={styles.slotsContainer}>
           {slots.map((slot, idx) => (
-            <Slot key={idx} {...slot} />
+            // @ts-ignore
+            <Slot key={idx} {...slot} length={maxLength} />
           ))}
         </View>
       )}
     />
   );
 };
-
-function Slot({ char, isActive, hasFakeCaret }: SlotProps) {
+// @ts-ignore
+function Slot({ char, isActive, hasFakeCaret, length }: SlotProps) {
+  const { width } = useWindowDimensions();
+  const gap = 8;
+  const slotWidth = (width - 30 - (length - 1) * gap) / length;
   return (
-    <View style={[styles.slot, isActive && styles.activeSlot]}>
+    <View
+      style={[styles.slot, isActive && styles.activeSlot, { width: slotWidth }]}
+    >
       {char !== null && <Text style={styles.char}>{char}</Text>}
       {hasFakeCaret && <FakeCaret />}
     </View>
@@ -86,7 +98,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   slot: {
-    width: 60,
+    width: 50,
     height: 55,
     alignItems: 'center',
     justifyContent: 'center',

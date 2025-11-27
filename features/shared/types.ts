@@ -47,3 +47,28 @@ export type SuccessResponseType = {
   success: boolean;
   message: string;
 };
+
+export type VerifyLoginOtpSuccessResponseType = {
+  success: boolean;
+  message: string;
+  meta: {
+    timestamp: string;
+    version: string;
+  };
+  data: ParentType;
+};
+
+export type ParentType = {
+  expires_in: number;
+  token: string;
+  user: {
+    id: number;
+    role: string;
+    role_id: number;
+    username: string;
+    userstatus: string;
+    fname: string;
+    lname: string;
+    mname?: string | null;
+  };
+};

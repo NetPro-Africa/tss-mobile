@@ -3,9 +3,16 @@ import { loginSchema } from './scehma';
 
 export type LoginType = z.infer<typeof loginSchema>;
 export type LoginResponseType = {
-  message: string;
-  token: string;
   success: boolean;
+  message: string;
+  data: {
+    username: string;
+    otp_expires_in: number;
+  };
+  meta: {
+    timestamp: string;
+    version: string;
+  };
 };
 
 export type VerifyOtpType = {

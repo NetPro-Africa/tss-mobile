@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { baseUrl } from '../shared/constants';
-import { SuccessResponseType, User } from '../shared/types';
+import {
+  SuccessResponseType,
+  User,
+  VerifyLoginOtpSuccessResponseType,
+} from '../shared/types';
 import {
   LoginResponseType,
   LoginType,
@@ -10,13 +14,27 @@ import {
 export const login = async ({ email, password }: LoginType) => {
   const { data } = await axios.post<LoginResponseType>(
     `${baseUrl}/auth/login`,
-    {
-      email,
-      password,
-    }
+    { username: email, password }
   );
 
-  return currentUser(data.token);
+  return data;
+};
+
+export const verifyLoginOtp = async ({
+  email,
+  otp,
+}: {
+  email: string;
+  otp: string;
+}) => {
+  const { data } = await axios.post<VerifyLoginOtpSuccessResponseType>(
+    `${baseUrl}/auth/verify-login-otp`,
+    {
+      username: email,
+      otp,
+    }
+  );
+  return data;
 };
 
 export const currentUser = async (token: string) => {

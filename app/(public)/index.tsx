@@ -1,6 +1,7 @@
 import { NormalButton } from '@/features/shared/components/normal-button';
 import { FloatingGradient } from '@/features/shared/components/ui/floating-gradient';
 import { Wrapper } from '@/features/shared/components/ui/wrapper';
+import { useFirstTime } from '@/hooks/use-first-time';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { Dimensions, StyleSheet, View } from 'react-native';
@@ -8,7 +9,9 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 const { height, width } = Dimensions.get('window');
 const OnboardScreen = () => {
   const router = useRouter();
+  const setFirstTime = useFirstTime((state) => state.setFirstTime);
   const onPress = () => {
+    setFirstTime();
     router.replace('/login');
   };
   return (
