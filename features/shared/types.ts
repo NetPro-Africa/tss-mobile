@@ -71,4 +71,5 @@ export type ParentType = {
     lname: string;
     mname?: string | null;
   };
+  loggedInAt: number;
 };

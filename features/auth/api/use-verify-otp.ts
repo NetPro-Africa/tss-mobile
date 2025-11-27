@@ -15,7 +15,7 @@ export const useVerifyLoginOtp = () => {
       toast.success('Success', {
         description: data.message,
       });
-      getUser(data.data);
+      getUser({ ...data.data, loggedInAt: Date.now() });
     },
     onError: (error) => {
       if (isAxiosError(error)) {
