@@ -1,6 +1,5 @@
 import { ExpandableButton } from '@/features/shared/components/button/ExpandableButton';
 import { colors } from '@/features/shared/constants';
-import { useWindowDimensions } from 'react-native';
 
 type Props = {
   title: string;
@@ -21,14 +20,13 @@ export const Button = ({
   height = 55,
   _width,
 }: Props) => {
-  const { width } = useWindowDimensions();
-  const _widthValue = _width || width; // Default to full width minus padding if _width is not provided
+  // Default to full width minus padding if _width is not provided
   return (
     <ExpandableButton
       disabled={disabled}
       title={title}
       borderRadius={5}
-      // width={_widthValue - w}
+      width={_width}
       height={height}
       isLoading={isLoading}
       onPress={onPress}

@@ -72,4 +72,17 @@ export type ParentType = {
     mname?: string | null;
   };
   loggedInAt: number;
+  parent: Parent;
+};
+type Parent = {
+  address: string;
+  email: string;
+  fathers_job: string;
+  fathers_name: string;
+  fathers_phone: string;
+  id: number;
+  mothers_job: string;
+  mothers_name: string;
+  mothers_phone: string;
+  status: string;
 };
