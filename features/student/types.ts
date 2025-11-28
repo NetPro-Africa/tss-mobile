@@ -5,10 +5,9 @@ export type StudentSuccessResponseType = {
 };
 
 export type StudentType = {
-  regnum: string;
-  fname: string;
-  lname: string;
-  classname: string;
+  name: string;
+  id: number;
+  class: string;
 };
 
 export type FetchAttendanceType = {
@@ -156,3 +155,98 @@ export type FetchResultSheetSuccessType = {
   success: true;
   data: ResultSheetType;
 };
+// Main response type
+export interface ChildrenResponse {
+  success: boolean;
+  message: string;
+  data: Child[];
+  meta: Meta;
+}
+
+// Individual child/student record
+export interface Child {
+  id: number;
+  fname: string;
+  lname: string;
+  mname: string;
+  dob: string; // ISO date string "YYYY-MM-DD"
+  joindate: string; // ISO 8601 datetime with timezone
+  department_id: number;
+  class_arm_id: number;
+  olevelresulturl: string;
+  jamb: null | number;
+  birthcerturl: string | null;
+  othercerts: string | null;
+  email: string;
+  state_id: number;
+  country_id: number;
+  address: string;
+  phone: string;
+  fathersname: string;
+  mothersname: string;
+  fatherphone: string;
+  motherphone: string;
+  lga_id: number | null;
+  community: string;
+  passporturl: string | null;
+  user_id: number;
+  regno: string;
+  jamb_notification: string | null;
+  jambresult: string | null;
+  jamb_admin_letter: string | null;
+  status: string; // e.g., "Admitted"
+  admissiondate: string; // ISO date string
+  gender: 'Male' | 'Female'; // adjust if there are other values
+  application_no: string | null;
+  level_id: number;
+  sparent_id: number;
+  religion: string;
+  faculty_id: number;
+  jambregno: string | null;
+  previousschool: string;
+  programme_id: number;
+  fathersjob: string | null;
+  mothersjob: string | null;
+  studentstatus: 'active' | 'inactive'; // adjust as needed
+  mode_id: number;
+  universitymail: string | null;
+  category_id: number | null;
+  programetype_id: number | null;
+  duration_id: number | null;
+  landlocation: string | null;
+  landsize: string | null;
+  landowner: string | null;
+  landaccessurl: string | null;
+  session_id: number;
+  isclaretian: 'Yes' | 'No';
+  class_arm: ClassArm;
+  department: Department;
+}
+
+// Nested class arm
+export interface ClassArm {
+  id: number;
+  department_id: number;
+  arm_name: string; // e.g., "A", "B"
+  arm_description: string;
+  class_teacher_id: number | null;
+  status: 'active' | 'inactive';
+  created: string; // ISO 8601 datetime
+  modified: string; // ISO 8601 datetime
+}
+
+// Nested department
+export interface Department {
+  id: number;
+  faculty_id: number;
+  name: string; // e.g., "BASIC 1", "BASIC 4"
+  deptcode: string;
+  iscdl: 'Yes' | 'No';
+  maxunit: number;
+}
+
+// Meta information
+export interface Meta {
+  timestamp: string; // e.g., "2025-11-28 15:54:05"
+  version: string; // e.g., "v1"
+}

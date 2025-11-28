@@ -1,7 +1,7 @@
 import { MediumText } from '@/features/shared/components/typography';
 import { Button } from '@/features/shared/components/ui/button';
 import { Wrapper } from '@/features/shared/components/ui/wrapper';
-import { useAuth } from '@/features/shared/store/use-auth';
+import { FetchStudent } from '@/features/student/components/fetch-student';
 import { ErrorBoundaryProps } from 'expo-router';
 import { ScrollView } from 'react-native';
 export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
@@ -15,17 +15,14 @@ export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
   );
 }
 export default function HomeScreen() {
-  const { user } = useAuth();
-  console.log(user);
-
   return (
     <Wrapper>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ gap: 20, paddingBottom: 50 }}
       >
-        {/* <FetchStudent />
-        <AssignmentsCarousel />
+        <FetchStudent />
+        {/*<AssignmentsCarousel />
         <FetchAttendance />
         <FetchEvents horizontal /> */}
       </ScrollView>

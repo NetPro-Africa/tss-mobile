@@ -22,7 +22,7 @@ export const StudentMenu = ({ students }: Props) => {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <Stack direction="row" gap={5} alignItems="center">
-          <NormalText>{student?.fname ?? 'No students'}</NormalText>
+          <NormalText>{student?.name ?? 'No students'}</NormalText>
           <Entypo name="chevron-small-down" size={20} color={iconColor} />
         </Stack>
       </DropdownMenu.Trigger>
@@ -30,14 +30,12 @@ export const StudentMenu = ({ students }: Props) => {
         <DropdownMenu.Group>
           {students?.map((item) => (
             <DropdownMenu.Item
-              key={item.regnum}
-              textValue={`${item.fname} ${item.lname}`}
+              key={item.id.toString()}
+              textValue={item.name}
               onSelect={() => getStudent(item)}
             >
               <DropdownMenu.ItemTitle>
-                <Text style={{ fontFamily: 'Inter' }}>
-                  {item.fname} {item.lname}
-                </Text>
+                <Text style={{ fontFamily: 'Inter' }}>{item.name}</Text>
               </DropdownMenu.ItemTitle>
             </DropdownMenu.Item>
           ))}

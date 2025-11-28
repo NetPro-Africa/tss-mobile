@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { baseUrl } from '../shared/constants';
 import {
+  ChildrenResponse,
   FetchAttendanceResponseType,
   FetchAttendanceType,
   FetchCAResponseType,
@@ -11,12 +12,15 @@ import {
   FetchTermResponseType,
   FetchTestSummaryResponseType,
   FetchTestSummaryType,
-  StudentSuccessResponseType,
 } from './types';
 
-export const fetchStudent = async ({ token }: { token: string }) => {
-  const { data } = await axios.get<StudentSuccessResponseType>(
-    `${baseUrl}parents/my-students`,
+export const fetchStudent = async ({
+  token,
+}: {
+  token: string;
+}): Promise<ChildrenResponse> => {
+  const { data } = await axios.get<ChildrenResponse>(
+    `${baseUrl}/parents/children`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -9,15 +9,21 @@ import { useStudent } from '../store/useStudent';
 import { StudentMenu } from './student-menu';
 
 export const FetchStudent = () => {
-  const fname = useAuth((state) => state.user?.fname!);
+  const fname = useAuth((state) => state.user?.user.fname!);
+
   const getStudent = useStudent((state) => state.getStudent);
-  const { data, isPending, isError } = useGetStudent();
+  const { data: response, isPending, isError } = useGetStudent();
 
   useEffect(() => {
-    if (!isError && !isPending && Array.isArray(data?.data)) {
-      getStudent(data?.data[0]);
+    if (!isError && !isPending && Array.isArray(response?.data)) {
+      const students = response?.data.map((item) => ({
+        id: item.id,
+        name: item.fname + ' ' + item.lname,
+        class: item.department.name,
+      }));
+      getStudent(students[0]);
     }
-  }, [isError, isPending, data?.data, getStudent]);
+  }, [isError, isPending, response?.data, getStudent]);
 
   if (isError) {
     throw new Error('Failed to get data');
@@ -25,7 +31,15 @@ export const FetchStudent = () => {
   if (isPending) {
     return <LoadingBar />;
   }
-
+  if (!response) {
+    return;
+  }
+  const { data } = response;
+  const students = data.map((item) => ({
+    id: item.id,
+    name: item.fname + ' ' + item.lname,
+    class: item.department.name,
+  }));
   return (
     <Stack direction="row" justifyContent="space-between" mt={5}>
       <MediumText
@@ -35,7 +49,7 @@ export const FetchStudent = () => {
       >
         {fname}
       </MediumText>
-      <StudentMenu students={data.data} />
+      <StudentMenu students={students} />
     </Stack>
   );
 };
