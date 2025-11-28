@@ -1,5 +1,6 @@
 import { Colors } from '@/constants/Colors';
 import { useDeleteAccount } from '@/features/auth/api/use-delete-account';
+import { useLogout } from '@/features/auth/api/use-logout';
 import { CustomModal } from '@/features/shared/components/modal/custom-modal';
 import { LoadingModal } from '@/features/shared/components/modal/loading-modal';
 import { ThemedView } from '@/features/shared/components/ThemedView';
@@ -9,14 +10,12 @@ import {
 } from '@/features/shared/components/typography';
 import { Stack } from '@/features/shared/components/ui/stack';
 import { Wrapper } from '@/features/shared/components/ui/wrapper';
-import { useAuth } from '@/features/shared/store/use-auth';
 import { useColorScheme } from '@/hooks/useColorScheme.web';
 import { Feather, Ionicons } from '@expo/vector-icons';
-import * as Application from 'expo-application';
 import * as MailComposer from 'expo-mail-composer';
 import { useRouter } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Alert,
   FlatList,
@@ -36,7 +35,6 @@ import {
 } from '../../../components/list';
 import { dangerItems, supportItems } from '../constants';
 import { ListItem } from '../types';
-import { formatTimeAgo } from '../util';
 export const More = () => {
   const colorScheme = useColorScheme();
   const iconColor = Colors[colorScheme ?? 'light'].icon;
@@ -45,20 +43,12 @@ export const More = () => {
   const borderColor = Colors[colorScheme ?? 'light'].cardBorder;
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  // const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const { mutateAsync, isPending } = useDeleteAccount();
-  const { clearUser } = useAuth();
-
-  useEffect(() => {
-    const getLastUpdated = async () => {
-      const result = await Application.getLastUpdateTimeAsync();
-      setLastUpdated(result);
-    };
-    getLastUpdated();
-  }, []);
 
   const isDark = colorScheme === 'dark';
   const router = useRouter();
+  const { mutateAsync: logoutAsync, isPending: isLoggingOut } = useLogout();
   const handleOpenEmail = async () => {
     const isAvailable = await MailComposer.isAvailableAsync();
     if (!isAvailable) {
@@ -88,31 +78,20 @@ export const More = () => {
   const onPress = (id: string) => {
     console.log(id);
 
-    switch (id) {
-      case 'profile':
-        router.push('/profile');
-        break;
-      case 'logout':
-        setShowLogoutModal(true);
-        break;
-      case 'delete':
-        setShowDeleteModal(true);
-        break;
-      case 'contact':
-        WebBrowser.openBrowserAsync('https://tss.sch.ng/contact');
-        break;
-      case 'policy':
-        WebBrowser.openBrowserAsync('https://tss.sch.ng/privacy-policy');
-        break;
-      case 'feedback':
-        handleOpenEmail();
-        break;
-      case 'theme':
-        router.push('/theme');
-        break;
-
-      default:
-        break;
+    if (id === 'profile') {
+      router.push('/profile');
+    } else if (id === 'logout') {
+      setShowLogoutModal(true);
+    } else if (id === 'delete') {
+      setShowDeleteModal(true);
+    } else if (id === 'contact') {
+      WebBrowser.openBrowserAsync('https://tss.sch.ng/contact');
+    } else if (id === 'policy') {
+      WebBrowser.openBrowserAsync('https://tss.sch.ng/privacy-policy');
+    } else if (id === 'feedback') {
+      handleOpenEmail();
+    } else if (id === 'theme') {
+      router.push('/theme');
     }
   };
   const profileItems: ListItem[] = [
@@ -201,8 +180,10 @@ export const More = () => {
   const onClose = () => {
     setShowLogoutModal(false);
   };
-  const logout = () => {
-    clearUser();
+  const logout = async () => {
+    console.log('Pressed');
+
+    await logoutAsync();
     onClose();
   };
   const onCloseDelete = () => {
@@ -220,6 +201,7 @@ export const More = () => {
         onClose={onClose}
         subTitle="This will log you out of your account"
         visible={showLogoutModal}
+        isPending={isLoggingOut}
       />
       <CustomModal
         onPress={onDeleteAccount}
@@ -248,12 +230,12 @@ export const More = () => {
         {renderSection('Support', supportItems, 'support')}
         {renderSection('Account Actions', dangerItems, 'danger')}
 
-        <View style={styles.footer}>
+        {/* <View style={styles.footer}>
           <Text style={styles.footerText}>
             App Version {Application.nativeApplicationVersion} • Last updated{' '}
             {formatTimeAgo(lastUpdated)}
           </Text>
-        </View>
+        </View> */}
       </ScrollView>
     </Wrapper>
   );

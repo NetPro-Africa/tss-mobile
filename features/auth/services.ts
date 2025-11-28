@@ -93,6 +93,22 @@ export const resetPassword = async ({
 export const deleteAccount = async ({ token }: { token: string }) => {
   const { data } = await axios.post<SuccessResponseType>(
     `${baseUrl}/parent/me`,
+    undefined,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return data;
+};
+
+export const logout = async ({ token }: { token: string }) => {
+  console.log({ token });
+
+  const { data } = await axios.post<SuccessResponseType>(
+    `${baseUrl}/auth/logout`,
+    undefined,
     {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import Modal from 'react-native-modal';
+import { Modal, StyleSheet, View } from 'react-native';
 import { colors } from '../../constants';
 import { ThemedView } from '../ThemedView';
 import { MediumText, NormalText } from '../typography';
@@ -13,18 +12,25 @@ type Props = {
   subTitle?: string;
   onPress: () => void;
   onClose: () => void;
+  isPending?: boolean;
 };
 
 export const CustomModal = ({
   visible,
   onClose,
   onPress,
+  isPending = false,
   subTitle = 'This can not be undone!!',
   title = 'Are you sure about this?',
 }: Props) => {
   return (
-    <Modal isVisible={visible}>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      <View style={styles.overlay}>
         <ThemedView style={styles.innerContainer}>
           <Stack>
             <MediumText style={{ textAlign: 'center' }}>{title}</MediumText>
@@ -39,6 +45,7 @@ export const CustomModal = ({
               <CustomPressable
                 onPress={onPress}
                 style={[styles.button, { backgroundColor: 'red' }]}
+                disabled={isPending}
               >
                 <NormalText style={{ color: colors.white }}>Proceed</NormalText>
               </CustomPressable>
@@ -63,5 +70,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 20,
     borderRadius: 10,
+  },
+  overlay: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingHorizontal: 16,
   },
 });
