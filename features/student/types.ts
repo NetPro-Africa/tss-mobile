@@ -49,12 +49,12 @@ type AttendanceRecord = {
 
 // Summary stats
 type AttendanceSummary = {
-  total: number;
+  total_days: number;
   present: number;
   absent: number;
   late: number;
   excused: number;
-  rate: number;
+  attendance_rate: number;
 };
 
 // Date range

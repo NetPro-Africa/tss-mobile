@@ -54,14 +54,66 @@ export type SubmitAssignmentResponseType = {
   data: SubmitAssignmentType;
 };
 
+type Department = {
+  id: number;
+  name: string;
+};
+
+type SubjectType = {
+  id: number;
+  name: string;
+  department_id: number;
+  department: Department;
+};
+
+type SetAssignment = {
+  id: number;
+  title: string;
+  description: string;
+  opendate: string; // ISO datetime string
+  closedate: string; // ISO datetime string
+  teacher_id: number;
+  subject_id: number;
+  session_id: number;
+  semester_id: number;
+  status: 'active' | string; // you can expand if there are more statuses
+  datecreated: string; // ISO datetime string
+  subject: SubjectType;
+};
+
+export type AssignmentType2 = {
+  id: number;
+  student_id: number;
+  setassignment_id: number;
+  subject_id: number;
+  details: string;
+  status: 'submitted' | 'graded' | string;
+  score: number | null;
+  remarks: string | null;
+  datecreated: string; // ISO datetime string
+};
+
+type StudentType = {
+  id: number;
+  regno: string;
+  fullname: string;
+};
+
+type AssignmentItemType = {
+  student: StudentType;
+  assignment: AssignmentType2;
+  setassignment: SetAssignment;
+  status: 'completed' | 'available';
+};
+
 export type AssignmentsResponse = {
-  success: boolean;
+  success: true;
   message: string;
-  data: {
-    assignments: AssignmentItem[];
-    pagination: Pagination;
+  data: AssignmentItemType[];
+  meta: {
+    timestamp: string; // ISO datetime string
+    version: string;
   };
-  meta: Meta;
 };
 
 export type AssignmentItem = {

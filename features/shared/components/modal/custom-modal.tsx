@@ -13,6 +13,7 @@ type Props = {
   onPress: () => void;
   onClose: () => void;
   isPending?: boolean;
+  children?: React.ReactNode;
 };
 
 export const CustomModal = ({
@@ -22,6 +23,7 @@ export const CustomModal = ({
   isPending = false,
   subTitle = 'This can not be undone!!',
   title = 'Are you sure about this?',
+  children,
 }: Props) => {
   return (
     <Modal
@@ -35,6 +37,7 @@ export const CustomModal = ({
           <Stack>
             <MediumText style={{ textAlign: 'center' }}>{title}</MediumText>
             <NormalText style={{ textAlign: 'center' }}>{subTitle}</NormalText>
+            {children}
             <Stack direction="row" gap={5} mt={10}>
               <CustomPressable
                 onPress={onClose}

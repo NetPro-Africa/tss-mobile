@@ -1,22 +1,26 @@
 import { Colors } from '@/constants/Colors';
-import { CustomSelect } from '@/features/shared/components/custom-select';
 import { ThemedView } from '@/features/shared/components/ThemedView';
 import { Title } from '@/features/shared/components/title';
+import {
+  MediumText,
+  NormalText,
+} from '@/features/shared/components/typography';
 import { Stack } from '@/features/shared/components/ui/stack';
 import { colors } from '@/features/shared/constants';
 import { useColorScheme } from '@/hooks/useColorScheme.web';
-import { StyleSheet } from 'react-native';
+import { AnimatePresence, MotiView } from 'moti';
+import { FlatList, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Theme } from 'react-native-calendars/src/types';
-import { AttendanceType, TermSingleType } from '../types';
+import type { AttendanceResponse } from '../types';
 
-// Define attendance status colors
-const ATTENDANCE_COLORS = {
-  PRESENT: '#8B5CF6',
-  ABSENT: '#EF4444',
-  CLASS_DAY: '#87CEEB',
-  NO_CLASS: '#d9e1e8',
-} as const;
+const STATUS_COLORS: Record<'present' | 'absent' | 'late' | 'excused', string> =
+  {
+    present: '#8B5CF6',
+    absent: '#EF4444',
+    late: '#F59E0B',
+    excused: '#06B6D4',
+  };
 
 // Define legend items
 // interface LegendItem {
@@ -43,44 +47,30 @@ interface MarkedDateConfig {
 // ];
 
 type Props = {
-  data: AttendanceType[];
-  term: TermSingleType;
-  setTerm: (term: TermSingleType) => void;
-  currentDate?: string;
+  data: AttendanceResponse['data'];
 };
 
-export const RenderAttendance = ({
-  data,
-  setTerm,
-  term,
-  currentDate = new Date().toISOString().split('T')[0],
-}: Props) => {
-  const dataToUse: AttendanceType[] = data.length > 0 ? data : [];
+export const RenderAttendance = ({ data }: Props) => {
   const colorScheme = useColorScheme();
   const bg = Colors[colorScheme ?? 'light'].card;
   const textColor = Colors[colorScheme ?? 'light'].text;
-  // Function to convert attendance data to marked dates format
-  const formatAttendanceData = (data: AttendanceType[]): any => {
+  const { attendances, summary } = data;
+
+  const formatAttendanceData = (): any => {
     const markedDates: any = {};
-
-    data.forEach((record: AttendanceType) => {
-      const date: string = new Date(record.date).toISOString().split('T')[0];
-
+    attendances.forEach((record) => {
+      const date = record.attendance_date;
       const config: MarkedDateConfig = {
         selected: true,
         selectedTextColor: 'white',
-        selectedColor: record.present
-          ? ATTENDANCE_COLORS.PRESENT
-          : ATTENDANCE_COLORS.ABSENT,
+        selectedColor: STATUS_COLORS[record.status],
       };
-
       markedDates[date] = config;
     });
-
     return markedDates;
   };
 
-  const markedDates: any = formatAttendanceData(dataToUse);
+  const markedDates: any = formatAttendanceData();
   const calendarTheme: Theme = {
     backgroundColor: bg,
     calendarBackground: bg,
@@ -106,17 +96,10 @@ export const RenderAttendance = ({
     textMonthFontSize: 16,
     textDayHeaderFontSize: 13,
   };
-  const uniqueArray = [...new Set(data?.map((i) => i.term) ?? [])];
   return (
     <Stack backgroundColor="transparent" gap={10}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Title title="Attendance" />
-        <CustomSelect
-          value={term}
-          data={uniqueArray}
-          onSelect={(value) => setTerm(value as TermSingleType)}
-          flex={0}
-        />
       </Stack>
 
       <ThemedView style={{ minHeight: 250 }}>
@@ -129,6 +112,114 @@ export const RenderAttendance = ({
           disableArrowRight={false}
           style={styles.calendar}
         />
+      </ThemedView>
+
+      <ThemedView style={{ borderRadius: 10, padding: 12 }}>
+        <MediumText style={{ marginBottom: 8 }}>Summary</MediumText>
+        <Stack direction="row" gap={8} style={{ flexWrap: 'wrap' }}>
+          <AnimatePresence>
+            {[
+              { label: 'Total', value: summary.total_days, color: '#374151' },
+              {
+                label: 'Present',
+                value: summary.present,
+                color: STATUS_COLORS.present,
+              },
+              {
+                label: 'Absent',
+                value: summary.absent,
+                color: STATUS_COLORS.absent,
+              },
+              { label: 'Late', value: summary.late, color: STATUS_COLORS.late },
+              {
+                label: 'Excused',
+                value: summary.excused,
+                color: STATUS_COLORS.excused,
+              },
+              {
+                label: 'Rate',
+                value: Math.round(summary.attendance_rate) + '%',
+                color: colors.purple,
+              },
+            ].map((item) => (
+              <MotiView
+                key={item.label}
+                from={{ opacity: 0, translateY: 6 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ type: 'timing', duration: 250 }}
+                style={{
+                  paddingVertical: 8,
+                  paddingHorizontal: 12,
+                  borderRadius: 8,
+                  backgroundColor: item.color,
+                }}
+              >
+                <Stack>
+                  <NormalText style={{ color: '#fff' }}>
+                    {item.label}
+                  </NormalText>
+                  <MediumText style={{ color: '#fff' }}>
+                    {String(item.value)}
+                  </MediumText>
+                </Stack>
+              </MotiView>
+            ))}
+          </AnimatePresence>
+        </Stack>
+      </ThemedView>
+
+      <ThemedView style={{ borderRadius: 10, padding: 12 }}>
+        <MediumText style={{ marginBottom: 8 }}>Daily Records</MediumText>
+        <Stack gap={6}>
+          <AnimatePresence>
+            <FlatList
+              data={attendances}
+              renderItem={({ item }) => (
+                <MotiView
+                  key={item.id}
+                  from={{ opacity: 0, translateY: 6 }}
+                  animate={{ opacity: 1, translateY: 0 }}
+                  transition={{ type: 'timing', duration: 200 }}
+                  style={{
+                    padding: 10,
+                    borderRadius: 8,
+                    borderWidth: 1,
+                    borderColor: '#e5e7eb',
+                  }}
+                >
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <NormalText>{item.attendance_date}</NormalText>
+                    <NormalText
+                      style={{
+                        color: STATUS_COLORS[item.status],
+                        fontWeight: '600',
+                      }}
+                    >
+                      {item.status.toUpperCase()}
+                    </NormalText>
+                  </Stack>
+                  {item.remarks && (
+                    <NormalText style={{ opacity: 0.8, marginTop: 4 }}>
+                      {item.remarks}
+                    </NormalText>
+                  )}
+                </MotiView>
+              )}
+              scrollEnabled={false}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ gap: 10 }}
+              ListEmptyComponent={() => (
+                <NormalText style={{ opacity: 0.8, marginTop: 4 }}>
+                  No records found
+                </NormalText>
+              )}
+            />
+          </AnimatePresence>
+        </Stack>
       </ThemedView>
     </Stack>
   );

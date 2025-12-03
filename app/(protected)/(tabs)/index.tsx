@@ -21,7 +21,7 @@ export default function HomeScreen() {
     <Wrapper>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ gap: 20, paddingBottom: 50 }}
+        contentContainerStyle={{ gap: 20, paddingBottom: 100 }}
       >
         <FetchStudent />
         <AssignmentsCarousel />

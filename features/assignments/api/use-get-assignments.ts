@@ -8,14 +8,14 @@ import { fetchAssignments } from '../service';
 export const useGetAssignments = ({
   page = 1,
   limit = 5,
+  status = 'available',
 }: Partial<PaginateRequestType>) => {
   const token = useAuth((state) => state.user?.token!);
-  console.log({ token });
 
   return useQuery({
-    queryKey: ['assignments', token, page],
+    queryKey: ['assignments', token, page, status],
     queryFn: async () => {
-      return await fetchAssignments({ token, page, limit });
+      return await fetchAssignments({ token, page, limit, status });
     },
     retry: handleRetry,
   });

@@ -91,4 +91,5 @@ export type PaginateRequestType = {
   token: string;
   page?: number;
   limit?: number;
+  status: 'pending' | 'submitted' | 'graded' | 'available';
 };
