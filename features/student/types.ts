@@ -12,8 +12,9 @@ export type StudentType = {
 
 export type FetchAttendanceType = {
   token?: string;
-  regnum: string;
-  term: string;
+  student_id: number;
+  start_date?: string;
+  end_date?: string;
 };
 
 export type AttendanceType = {
@@ -24,10 +25,58 @@ export type AttendanceType = {
   term: string;
 };
 
-export type FetchAttendanceResponseType = {
-  success: boolean;
+type AttendanceStatus = 'present' | 'absent' | 'late' | 'excused';
+
+// Student
+type Student = {
+  id: number;
+  regno: string;
+  fname: string;
+  lname: string;
+  fullname: string;
+  class_arm: string;
+};
+
+// Single attendance record
+type AttendanceRecord = {
+  id: number;
+  student_id: number;
+  attendance_date: string; // ISO date string "YYYY-MM-DD"
+  status: AttendanceStatus;
+  remarks: string | null;
+  created: string; // "YYYY-MM-DD HH:mm:ss"
+};
+
+// Summary stats
+type AttendanceSummary = {
+  total: number;
+  present: number;
+  absent: number;
+  late: number;
+  excused: number;
+  rate: number;
+};
+
+// Date range
+type DateRange = {
+  start_date: string;
+  end_date: string;
+};
+
+// Full response
+export type AttendanceResponse = {
+  success: true;
   message: string;
-  data: AttendanceType[];
+  data: {
+    student: Student;
+    attendances: AttendanceRecord[];
+    summary: AttendanceSummary;
+    date_range: DateRange;
+  };
+  meta: {
+    timestamp: string;
+    version: string;
+  };
 };
 
 export const TermType = ['First Term', 'Second Term', 'Third Term'];

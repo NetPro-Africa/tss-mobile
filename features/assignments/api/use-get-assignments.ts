@@ -1,20 +1,22 @@
 import { useAuth } from '@/features/shared/store/use-auth';
 import { useQuery } from '@tanstack/react-query';
 
+import { PaginateRequestType } from '@/features/shared/types';
+import { handleRetry } from '@/features/shared/utils';
 import { fetchAssignments } from '../service';
-import { FetchAssignmentResponseType } from '../types';
 
 export const useGetAssignments = ({
-  regnum,
-  testid,
-}: FetchAssignmentResponseType) => {
+  page = 1,
+  limit = 5,
+}: Partial<PaginateRequestType>) => {
   const token = useAuth((state) => state.user?.token!);
+  console.log({ token });
 
   return useQuery({
-    queryKey: ['assignments', token, regnum, testid],
+    queryKey: ['assignments', token, page],
     queryFn: async () => {
-      return await fetchAssignments({ token, regnum, testid });
+      return await fetchAssignments({ token, page, limit });
     },
-    retry: 3,
+    retry: handleRetry,
   });
 };

@@ -1,16 +1,20 @@
 import { useAuth } from '@/features/shared/store/use-auth';
+import { handleRetry } from '@/features/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAttendance } from '../services';
 import { FetchAttendanceType } from '../types';
 
-export const useGetAttendance = ({ regnum, term }: FetchAttendanceType) => {
+export const useGetAttendance = ({
+  student_id,
+  start_date,
+  end_date,
+}: FetchAttendanceType) => {
   const token = useAuth((state) => state.user?.token!);
 
   return useQuery({
-    queryKey: ['attendance', token, regnum, term],
-    queryFn: async () => {
-      return await fetchAttendance({ token, regnum, term });
-    },
-    retry: 3,
+    queryKey: ['attendance', token, student_id, start_date, end_date],
+    queryFn: async () =>
+      fetchAttendance({ token, student_id, start_date, end_date }),
+    retry: handleRetry,
   });
 };

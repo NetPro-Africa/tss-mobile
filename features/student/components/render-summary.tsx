@@ -1,5 +1,6 @@
 import { CardHeader } from '@/components/card';
 import { Colors } from '@/constants/Colors';
+import { AssignmentItem } from '@/features/assignments/types';
 import {
   Card,
   CardContent,
@@ -15,27 +16,26 @@ import { colors } from '@/features/shared/constants';
 import { useColorScheme } from '@/hooks/useColorScheme.web';
 import { Entypo } from '@expo/vector-icons';
 import { format } from 'date-fns';
-import { router } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { SummaryType } from '../types';
 
 type Props = {
-  item: SummaryType;
+  item: AssignmentItem;
   navigate?: boolean;
 };
 
 export const RenderSummary = ({ item, navigate }: Props) => {
-  const monthDay = format(item.date1, 'MMM');
-  const day = format(item.date1, 'd');
+  const assignment = item.assignment;
+  const monthDay = format(assignment.opendate, 'MMM');
+  const day = format(assignment.opendate, 'd');
 
   const colorScheme = useColorScheme();
   const iconColor = Colors[colorScheme ?? 'light'].icon;
   const onPress = () => {
     if (!navigate) return;
-    router.push(
-      `/assignment-detail?testid=${item.testid}&date1=${format(item.date1, 'PP')}&date2=${format(item.date2, 'PP HH:mm')}`
-    );
+    // router.push(
+    //   `/assignment-detail?testid=${item.testid}&date1=${format(item.date1, 'PP')}&date2=${format(item.date2, 'PP HH:mm')}`
+    // );
   };
   return (
     <CustomPressable onPress={onPress}>
@@ -50,7 +50,7 @@ export const RenderSummary = ({ item, navigate }: Props) => {
               <Stack flex={1}>
                 <NormalText style={styles.text}>Home work</NormalText>
                 <MediumText style={styles.subject}>
-                  {item.subjectName}
+                  {assignment.subject.name}
                 </MediumText>
               </Stack>
               <Entypo name="chevron-right" color={iconColor} size={25} />
@@ -69,7 +69,7 @@ export const RenderSummary = ({ item, navigate }: Props) => {
               <MediumText
                 style={{ color: colors.white, fontSize: RFValue(15) }}
               >
-                {format(item.date2, 'PPP HH:mm')}
+                {format(assignment.closedate, 'PPP HH:mm')}
               </MediumText>
             </Stack>
           </CardFooter>

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { baseUrl } from '../shared/constants';
 import {
+  AttendanceResponse,
   ChildrenResponse,
-  FetchAttendanceResponseType,
   FetchAttendanceType,
   FetchCAResponseType,
   FetchCAType,
@@ -32,13 +32,12 @@ export const fetchStudent = async ({
 
 export const fetchAttendance = async ({
   token,
-  regnum,
-  term,
+  student_id,
+  start_date,
+  end_date,
 }: FetchAttendanceType) => {
-  const { data } = await axios.get<FetchAttendanceResponseType>(
-    `${baseUrl}parents/attendance?regnum=${encodeURI(regnum)}&term=${encodeURI(
-      term
-    )}`,
+  const { data } = await axios.get<AttendanceResponse>(
+    `${baseUrl}/parents/child-attendance/${student_id}?start_date=${start_date}&end_date=${end_date}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

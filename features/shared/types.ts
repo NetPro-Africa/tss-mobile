@@ -86,3 +86,9 @@ type Parent = {
   mothers_phone: string;
   status: string;
 };
+
+export type PaginateRequestType = {
+  token: string;
+  page?: number;
+  limit?: number;
+};

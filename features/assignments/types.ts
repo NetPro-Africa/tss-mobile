@@ -53,3 +53,64 @@ export type SubmitAssignmentResponseType = {
   message: string;
   data: SubmitAssignmentType;
 };
+
+export type AssignmentsResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    assignments: AssignmentItem[];
+    pagination: Pagination;
+  };
+  meta: Meta;
+};
+
+export type AssignmentItem = {
+  student: Student;
+  assignment: Assignment;
+  submission: Submission | null;
+};
+
+export type Student = {
+  id: number;
+  regno: string; // e.g. "TSS/2024/001"
+  fullname: string;
+  class_arm: string; // e.g. "JSS 1A"
+};
+
+export type Assignment = {
+  id: number;
+  title: string;
+  description: string;
+  opendate: string; // "YYYY-MM-DD HH:mm:ss"
+  closedate: string; // "YYYY-MM-DD HH:mm:ss"
+  subject: Subject;
+  teacher: Teacher;
+};
+
+export type Subject = {
+  id: number;
+  name: string;
+};
+
+export type Teacher = {
+  id: number;
+  fullname: string;
+};
+
+export type Submission = {
+  id: number;
+  status: 'submitted' | 'graded' | 'late' | 'missing' | string;
+  score: number | null;
+  datecreated: string; // "YYYY-MM-DD HH:mm:ss"
+};
+
+export type Pagination = {
+  page: number;
+  limit: number;
+  count: number;
+};
+
+export type Meta = {
+  timestamp: string;
+  version: string;
+};

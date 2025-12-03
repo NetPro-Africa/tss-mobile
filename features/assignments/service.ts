@@ -1,19 +1,19 @@
 import axios from 'axios';
 import { baseUrl } from '../shared/constants';
+import { PaginateRequestType } from '../shared/types';
 import {
-  FetchAssignmentResponseType,
-  FetchAssignmentSuccessResponseType,
+  AssignmentsResponse,
   SubmitAssignmentResponseType,
   SubmitAssignmentsType,
 } from './types';
 
 export const fetchAssignments = async ({
   token,
-  regnum,
-  testid,
-}: FetchAssignmentResponseType) => {
-  const { data } = await axios.get<FetchAssignmentSuccessResponseType>(
-    `${baseUrl}parents/test-assignments/${testid}/${regnum}`,
+  page,
+  limit,
+}: PaginateRequestType) => {
+  const { data } = await axios.get<AssignmentsResponse>(
+    `${baseUrl}/parents/assignments?page=${page}&limit=${limit}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
