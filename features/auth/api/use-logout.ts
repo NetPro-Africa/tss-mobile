@@ -12,7 +12,7 @@ export const useLogout = () => {
       const data = await logout({ token: user?.token! });
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       clearUser();
 
       toast.success(`Logged out successfully`);

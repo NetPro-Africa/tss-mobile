@@ -117,3 +117,15 @@ export const logout = async ({ token }: { token: string }) => {
   );
   return data;
 };
+export const refreshToken = async ({ token }: { token: string }) => {
+  const { data } = await axios.post<SuccessResponseType>(
+    `${baseUrl}/auth/refresh`,
+    undefined,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return data;
+};

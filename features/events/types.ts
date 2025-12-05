@@ -1,7 +1,7 @@
 export type EventFetchType = {
   token: string;
   page: number;
-  pageSize: number;
+  limit: number;
 };
 
 export type EventSuccessResponseType = {
