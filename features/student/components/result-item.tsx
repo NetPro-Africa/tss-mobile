@@ -13,13 +13,8 @@ import { Stack } from '@/features/shared/components/ui/stack';
 import { colors } from '@/features/shared/constants';
 import type { ResultItem } from '@/features/student/types';
 import { useColorScheme } from '@/hooks/useColorScheme.web';
-import React, { useState } from 'react';
-import {
-  LayoutChangeEvent,
-  StyleSheet,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
 type Props = {
   item: ResultItem;
@@ -48,12 +43,6 @@ export const ResultItemCard = ({ item }: Props) => {
   const colorScheme = useColorScheme();
   const textColor = Colors[colorScheme ?? 'light'].text;
   const pill = gradeColor(item.grade);
-  const { width } = useWindowDimensions();
-  const [viewWidth, setViewWidth] = useState(width - 65);
-  const onLayout = (e: LayoutChangeEvent) => {
-    setViewWidth(e.nativeEvent.layout.width);
-  };
-  const boxWidth = viewWidth / 4 - 6;
 
   return (
     <Card>
@@ -72,20 +61,20 @@ export const ResultItemCard = ({ item }: Props) => {
           </View>
         </CardHeader>
         <Stack gap={8} mt={10}>
-          <View style={{ flexDirection: 'row', gap: 6 }} onLayout={onLayout}>
-            <Stack p={8} style={styles.box} width={boxWidth}>
+          <View style={{ flexDirection: 'row', gap: 6 }}>
+            <Stack p={8} style={styles.box} flex={1}>
               <NormalText>CA</NormalText>
               <MediumText>{item.ca}</MediumText>
             </Stack>
-            <Stack p={8} style={styles.box} width={boxWidth}>
+            <Stack p={8} style={styles.box} flex={1}>
               <NormalText>Exam 1</NormalText>
               <MediumText>{item.first_exam}</MediumText>
             </Stack>
-            <Stack p={8} style={styles.box} width={boxWidth}>
+            <Stack p={8} style={styles.box} flex={1}>
               <NormalText>Exam 2</NormalText>
               <MediumText>{item.second_exam}</MediumText>
             </Stack>
-            <Stack p={8} style={styles.box} width={boxWidth}>
+            <Stack p={8} style={styles.box} flex={1}>
               <NormalText>Exam 3</NormalText>
               <MediumText>{item.third_exam}</MediumText>
             </Stack>
