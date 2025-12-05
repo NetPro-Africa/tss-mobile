@@ -1,38 +1,50 @@
-import { MediumText } from '@/features/shared/components/typography';
+import { EmptyUi } from '@/features/shared/components/empty-ui';
 import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
 import React from 'react';
 import { View } from 'react-native';
-import { EventSuccessResponseType, EventTypes } from '../types';
+import { NewsItem, Pagination } from '../types';
 import { RenderEvent } from './render-event';
 
 type Props = {
-  data: EventSuccessResponseType;
+  news: NewsItem[];
+  pagination: Pagination;
   horizontal?: boolean;
   width: number;
   height: number;
+  summarize?: boolean;
 };
 
-export const RenderEvents = ({ data, horizontal, height, width }: Props) => {
-  const renderItem = ({ item }: LegendListRenderItemProps<EventTypes>) => (
-    <RenderEvent item={item} height={height} width={width} />
+export const RenderEvents = ({
+  news,
+  pagination,
+  horizontal,
+  height,
+  width,
+  summarize,
+}: Props) => {
+  const renderItem = ({ item }: LegendListRenderItemProps<NewsItem>) => (
+    <RenderEvent
+      item={item}
+      height={height}
+      width={width}
+      summarize={summarize}
+    />
   );
 
-  const isHorizontal = !!horizontal && data.data.length > 0;
+  const isHorizontal = !!horizontal && news.length > 0;
 
   return (
     <View style={{ flex: 1 }}>
       <LegendList
-        data={data.data}
+        data={news}
         renderItem={renderItem}
         horizontal={isHorizontal}
-        keyExtractor={(item, i) => item.ref}
+        keyExtractor={(item, i) => item.id.toString()}
         contentContainerStyle={{ gap: 15 }}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         recycleItems
-        ListEmptyComponent={() => (
-          <MediumText style={{ textAlign: 'center' }}>No events yet</MediumText>
-        )}
+        ListEmptyComponent={() => <EmptyUi message="No news yet" />}
       />
     </View>
   );

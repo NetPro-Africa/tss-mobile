@@ -1,3 +1,4 @@
+import { FetchEvents } from '@/features/events/components/fetch-events';
 import { MediumText } from '@/features/shared/components/typography';
 import { Button } from '@/features/shared/components/ui/button';
 import { Wrapper } from '@/features/shared/components/ui/wrapper';
@@ -26,7 +27,7 @@ export default function HomeScreen() {
         <FetchStudent />
         <AssignmentsCarousel />
         <FetchAttendance />
-        {/* <FetchEvents horizontal /> */}
+        <FetchEvents horizontal />
       </ScrollView>
     </Wrapper>
   );

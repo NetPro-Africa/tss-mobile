@@ -12,3 +12,10 @@ export const handleRetry = (failureCount: number, error: any) =>
   isAxiosError(error) && error.response?.status === 401
     ? false
     : failureCount < 2;
+
+export const trimText = (text: string, length: number) => {
+  if (text.length <= length) {
+    return text;
+  }
+  return text.substring(0, length) + '...';
+};
