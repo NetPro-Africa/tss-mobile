@@ -14,11 +14,13 @@ type Props = {
   page?: number;
   limit?: number;
   horizontal?: boolean;
+  onEndReached?: () => void;
 };
 export const FetchEvents = ({
   page = 1,
   limit = 5,
   horizontal = false,
+  onEndReached,
 }: Props) => {
   const token = useAuth((state) => state.user?.token!);
   const { width } = useWindowDimensions();
@@ -42,7 +44,6 @@ export const FetchEvents = ({
     );
   }
   const { news, pagination } = data.data;
-  console.log({ news, pagination });
 
   return (
     <Stack flex={1} gap={20} pb={50} backgroundColor="transparent">
@@ -65,6 +66,7 @@ export const FetchEvents = ({
         horizontal={horizontal}
         width={_width}
         height={150}
+        onEndReached={onEndReached}
       />
     </Stack>
   );

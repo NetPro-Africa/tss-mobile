@@ -6,12 +6,14 @@ import {
   FetchAttendanceType,
   FetchCAResponseType,
   FetchCAType,
+  FetchResult,
   FetchResultSheetSuccessType,
   FetchSessionResponseType,
   FetchSessionType,
   FetchTermResponseType,
   FetchTestSummaryResponseType,
   FetchTestSummaryType,
+  ResultApiResponse,
 } from './types';
 
 export const fetchStudent = async ({
@@ -149,4 +151,19 @@ export const fetchResultSheet = async ({
   } catch (error) {
     throw new Error(`${error}`);
   }
+};
+export const fetchResult = async ({ token, id, page, limit }: FetchResult) => {
+  const query =
+    typeof page !== 'undefined' && typeof limit !== 'undefined'
+      ? `?page=${page}&limit=${limit}`
+      : '';
+  const { data } = await axios.get<ResultApiResponse>(
+    `${baseUrl}/parents/child-results/${id}${query}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return data.data;
 };

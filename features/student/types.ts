@@ -139,6 +139,13 @@ export type FetchCAType = {
   regnum: string;
   token?: string;
 };
+export type FetchResult = {
+  id: string | number;
+
+  token?: string;
+  page?: number;
+  limit?: number;
+};
 
 export type FetchSessionType = {
   token: string;
@@ -202,7 +209,7 @@ export type ResultSheetType = {
 };
 export type FetchResultSheetSuccessType = {
   success: true;
-  data: ResultSheetType;
+  id: string | number;
 };
 // Main response type
 export interface ChildrenResponse {
@@ -299,3 +306,84 @@ export interface Meta {
   timestamp: string; // e.g., "2025-11-28 15:54:05"
   version: string; // e.g., "v1"
 }
+
+type StudentData = {
+  id: number;
+  regno: string; // e.g. "TSS/2024/001"
+  fname: string;
+  lname: string;
+  mname: string;
+  fullname: string;
+  department: string; // e.g. "Science"
+  class_arm: string; // e.g. "JSS 1A"
+};
+
+type Subject = {
+  id: number;
+  name: string; // e.g. "Mathematics"
+  code: string; // e.g. "MTH"
+};
+
+type Semester = {
+  id: number;
+  name: string; // e.g. "First Term"
+};
+
+type Session = {
+  id: number;
+  name: string; // e.g. "2024/2025"
+};
+
+export type ResultItem = {
+  id: number;
+  student_id: number;
+  subject_id: number;
+  ca: number; // Continuous Assessment
+  first_exam: number;
+  second_exam: number;
+  third_exam: number;
+  total: number;
+  score: number;
+  grade: 'A' | 'B' | 'C' | 'D' | 'E' | 'F'; // extend as needed
+  remark: string; // e.g. "Excellent", "Good", etc.
+  approvalstatus: 'approved' | 'pending' | 'rejected';
+  uploaddate: string; // format: "YYYY-MM-DD HH:MM:SS"
+  subject: Subject;
+  semester: Semester;
+  session: Session;
+};
+
+type ResultSummary = {
+  total_subjects: number;
+  average_score: number; // can be float
+  highest_score: number;
+  lowest_score: number;
+  position: number; // e.g. 5th position
+  class_size: number;
+};
+
+export type Pagination = {
+  page: number;
+  limit: number;
+  count: number;
+  total: number;
+  total_pages: number;
+};
+
+export type StudentResponseData = {
+  student: StudentData;
+  results: ResultItem[];
+  summary: ResultSummary;
+  pagination: Pagination;
+};
+
+// Full API response type
+export type ResultApiResponse = {
+  success: boolean;
+  message: string;
+  data: StudentResponseData;
+  meta: {
+    timestamp: string; // e.g. "2025-11-27 17:44:51"
+    version: string; // e.g. "v1"
+  };
+};

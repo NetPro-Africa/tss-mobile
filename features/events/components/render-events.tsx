@@ -12,6 +12,7 @@ type Props = {
   width: number;
   height: number;
   summarize?: boolean;
+  onEndReached?: () => void;
 };
 
 export const RenderEvents = ({
@@ -21,6 +22,7 @@ export const RenderEvents = ({
   height,
   width,
   summarize,
+  onEndReached,
 }: Props) => {
   const renderItem = ({ item }: LegendListRenderItemProps<NewsItem>) => (
     <RenderEvent
@@ -30,7 +32,12 @@ export const RenderEvents = ({
       summarize={summarize}
     />
   );
-
+  const onFetchMore = () => {
+    if (pagination.page === pagination.total_pages) {
+      return;
+    }
+    onEndReached?.();
+  };
   const isHorizontal = !!horizontal && news.length > 0;
 
   return (
@@ -45,6 +52,8 @@ export const RenderEvents = ({
         showsVerticalScrollIndicator={false}
         recycleItems
         ListEmptyComponent={() => <EmptyUi message="No news yet" />}
+        onEndReachedThreshold={0.5}
+        onEndReached={onFetchMore}
       />
     </View>
   );

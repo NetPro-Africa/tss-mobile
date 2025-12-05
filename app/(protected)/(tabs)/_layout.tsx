@@ -39,9 +39,9 @@ export default function TabLayout() {
       <Tabs.Screen
         name="performance"
         options={{
-          title: 'Performance',
+          title: 'Result',
           tabBarIcon: ({ color }) => (
-            <Feather size={28} name="trending-up" color={color} />
+            <Feather size={28} name="book-open" color={color} />
           ),
         }}
       />
@@ -50,7 +50,7 @@ export default function TabLayout() {
         options={{
           title: 'Assignments',
           tabBarIcon: ({ color }) => (
-            <Feather size={28} name="list" color={color} />
+            <Feather size={28} name="book" color={color} />
           ),
         }}
       />

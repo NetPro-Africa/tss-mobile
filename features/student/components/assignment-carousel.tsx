@@ -42,18 +42,14 @@ export const AssignmentsCarousel = () => {
   if (!data || (data as AssignmentsResponse).data.length === 0) {
     const textColor = Colors[colorScheme ?? 'light'].text;
     return (
-      <View style={{ paddingHorizontal: 15 }}>
-        <Card style={{ width: width - 30, height: 180 }}>
-          <CardContent
-            style={{ alignItems: 'center', justifyContent: 'center' }}
-          >
-            <MediumText style={{ color: textColor }}>
-              No assignments available
-            </MediumText>
-            <NormalText style={{ opacity: 0.7 }}>Check back later</NormalText>
-          </CardContent>
-        </Card>
-      </View>
+      <Card style={{ height: 180 }}>
+        <CardContent style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <MediumText style={{ color: textColor }}>
+            No assignments available
+          </MediumText>
+          <NormalText style={{ opacity: 0.7 }}>Check back later</NormalText>
+        </CardContent>
+      </Card>
     );
   }
 
