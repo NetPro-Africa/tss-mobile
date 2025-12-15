@@ -29,6 +29,8 @@ export const fetchStudent = async ({
       },
     }
   );
+  console.log(data);
+
   return data;
 };
 

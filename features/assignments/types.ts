@@ -99,7 +99,7 @@ type StudentType = {
   fullname: string;
 };
 
-type AssignmentItemType = {
+export type AssignmentItemType = {
   student: StudentType;
   assignment: AssignmentType2;
   setassignment: SetAssignment;

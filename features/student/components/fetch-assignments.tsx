@@ -1,27 +1,29 @@
+import { useGetAssignments } from '@/features/assignments/api/use-get-assignments';
 import { LoadingCard } from '@/features/shared/components/loading-card';
 import { LoadingLists } from '@/features/shared/components/loading-lists';
-import { Stack } from '@/features/shared/components/ui/stack';
-import React from 'react';
+import React, { useState } from 'react';
 import { useWindowDimensions } from 'react-native';
-import { useGetTest } from '../api/use-get-test';
-import { useStudent } from '../store/useStudent';
+import { assignmentStatus } from '../types';
 import { RenderAssignments } from './render-assignment';
 
 type Props = {
-  status: 'pending' | 'completed' | 'elapsed';
+  status: assignmentStatus;
   navigate?: boolean;
 };
 
 export const FetchAssignments = ({ status, navigate }: Props) => {
-  const student = useStudent((state) => state.student);
-  const { data, isPending, isError, refetch, isRefetching, isRefetchError } =
-    useGetTest({
-      regnum: student?.regnum!,
+  const [page, setPage] = useState(1);
+  const { data, isPending, isError, isRefetching, refetch } = useGetAssignments(
+    {
+      page,
+      limit: 20,
       status,
-    });
+    }
+  );
+
   const { width } = useWindowDimensions();
 
-  if (isError || isRefetchError) {
+  if (isError) {
     console.log('Failed to fetch assignments data');
   }
   if (isPending) {
@@ -34,15 +36,17 @@ export const FetchAssignments = ({ status, navigate }: Props) => {
   }
 
   const dataToRender = data?.data || [];
-
+  const onScrollMore = () => {
+    setPage(page + 1);
+  };
   return (
-    <Stack flex={1}>
-      <RenderAssignments
-        data={dataToRender}
-        onRefresh={refetch}
-        refreshing={isRefetching}
-        navigate={navigate}
-      />
-    </Stack>
+    <RenderAssignments
+      data={dataToRender}
+      onRefresh={refetch}
+      refreshing={isRefetching}
+      navigate={navigate}
+      onScrollMore={onScrollMore}
+      status={status}
+    />
   );
 };

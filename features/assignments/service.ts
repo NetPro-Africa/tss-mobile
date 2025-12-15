@@ -11,9 +11,12 @@ export const fetchAssignments = async ({
   token,
   page,
   limit,
+  status,
 }: PaginateRequestType) => {
+  console.log({ status });
+
   const { data } = await axios.get<AssignmentsResponse>(
-    `${baseUrl}/parents/assignments?page=${page}&limit=${limit}`,
+    `${baseUrl}/parents/assignments?page=${page}&limit=${limit}&status=${status}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -28,8 +31,6 @@ export const submitAssignments = async ({
   testid,
   answers,
 }: SubmitAssignmentsType) => {
-  console.log({ answers, testid, regnum, token });
-
   const { data } = await axios.post<SubmitAssignmentResponseType>(
     `${baseUrl}parents/test/submit`,
     {

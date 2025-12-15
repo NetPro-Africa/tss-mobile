@@ -5,10 +5,12 @@ import { useColorScheme } from '@/hooks/useColorScheme.web';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { assignmentStatus } from '../types';
 import { FetchAssignments } from './fetch-assignments';
-type Value = 'pending' | 'completed' | 'elapsed';
+
 export function AssignmentTabs() {
-  const [value, setValue] = React.useState<Value>('pending');
+  const [value, setValue] = React.useState<assignmentStatus>('pending');
+
   const colorScheme = useColorScheme();
   const purpleColor = Colors[colorScheme ?? 'light'].question;
   const darkColor = Colors[colorScheme ?? 'light'].tabIconDefault;
@@ -18,7 +20,7 @@ export function AssignmentTabs() {
       <View className="mb-4 px-[15px]">
         <SegmentedControl.Root
           value={value}
-          onValueChange={(value) => setValue(value as Value)}
+          onValueChange={(value) => setValue(value as assignmentStatus)}
           className="border border-zinc-800 items-center  rounded-sm p-1"
         >
           <SegmentedControl.Item
@@ -43,9 +45,9 @@ export function AssignmentTabs() {
             </View>
           </SegmentedControl.Item>
           <SegmentedControl.Item
-            value="completed"
+            value="submitted"
             className={`flex-1 py-3 px-4  bg-transparent transition-all duration-200 ${
-              value === 'completed'
+              value === 'submitted'
                 ? `border-b-2 border-[${purpleColor}]`
                 : 'border-b-2 border-transparent'
             }`}
@@ -59,14 +61,14 @@ export function AssignmentTabs() {
                   },
                 ]}
               >
-                Completed
+                Submitted
               </MediumText>
             </View>
           </SegmentedControl.Item>
           <SegmentedControl.Item
-            value="elapsed"
+            value="available"
             className={`flex-1 py-3 px-4  bg-transparent transition-all duration-200 ${
-              value === 'elapsed'
+              value === 'available'
                 ? `border-b-2 border-[${purpleColor}]`
                 : 'border-b-2 border-transparent'
             }`}
@@ -80,20 +82,35 @@ export function AssignmentTabs() {
                   },
                 ]}
               >
-                Elapsed
+                Available
+              </MediumText>
+            </View>
+          </SegmentedControl.Item>
+          <SegmentedControl.Item
+            value="graded"
+            className={`flex-1 py-3 px-4  bg-transparent transition-all duration-200 ${
+              value === 'graded'
+                ? `border-b-2 border-[${purpleColor}]`
+                : 'border-b-2 border-transparent'
+            }`}
+          >
+            <View className="flex-row items-center justify-center space-x-2">
+              <MediumText
+                style={[
+                  styles.container,
+                  {
+                    color: darkColor,
+                  },
+                ]}
+              >
+                Graded
               </MediumText>
             </View>
           </SegmentedControl.Item>
         </SegmentedControl.Root>
       </View>
       <View className="px-[15px] flex-1 pb-[100px]">
-        {value === 'pending' && <FetchAssignments status={value} navigate />}
-        {value === 'completed' && (
-          <FetchAssignments status={value} navigate={false} />
-        )}
-        {value === 'elapsed' && (
-          <FetchAssignments status={value} navigate={false} />
-        )}
+        <FetchAssignments status={value} />
       </View>
     </View>
   );

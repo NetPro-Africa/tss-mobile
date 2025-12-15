@@ -19,3 +19,7 @@ export const trimText = (text: string, length: number) => {
   }
   return text.substring(0, length) + '...';
 };
+
+export const changeFirstLetterToCapital = (text: string) => {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+};

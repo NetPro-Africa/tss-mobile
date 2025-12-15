@@ -387,3 +387,5 @@ export type ResultApiResponse = {
     version: string; // e.g. "v1"
   };
 };
+
+export type assignmentStatus = 'pending' | 'submitted' | 'graded' | 'available';
