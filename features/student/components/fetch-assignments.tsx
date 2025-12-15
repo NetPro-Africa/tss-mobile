@@ -20,11 +20,12 @@ export const FetchAssignments = ({ status, navigate }: Props) => {
       status,
     }
   );
+  console.log({ data });
 
   const { width } = useWindowDimensions();
 
   if (isError) {
-    console.log('Failed to fetch assignments data');
+    throw new Error('Failed to fetch assignments data');
   }
   if (isPending) {
     return (
@@ -35,9 +36,11 @@ export const FetchAssignments = ({ status, navigate }: Props) => {
     );
   }
 
-  const dataToRender = data?.data || [];
+  const dataToRender = data?.data.assignments || [];
   const onScrollMore = () => {
-    setPage(page + 1);
+    if (page < data?.data.pagination.total_pages) {
+      setPage(page + 1);
+    }
   };
   return (
     <RenderAssignments

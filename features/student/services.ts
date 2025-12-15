@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AssignmentResponse, TakeTestType } from '../assignments/types';
 import { baseUrl } from '../shared/constants';
 import {
   AttendanceResponse,
@@ -13,7 +14,9 @@ import {
   FetchTermResponseType,
   FetchTestSummaryResponseType,
   FetchTestSummaryType,
+  ResponseAssignmentType,
   ResultApiResponse,
+  SingleAssignmentParams,
 } from './types';
 
 export const fetchStudent = async ({
@@ -29,7 +32,6 @@ export const fetchStudent = async ({
       },
     }
   );
-  console.log(data);
 
   return data;
 };
@@ -73,8 +75,6 @@ export const fetchTestSummary = async ({
   token,
   status,
 }: FetchTestSummaryType) => {
-  console.log({ status });
-
   try {
     const { data } = await axios.get<FetchTestSummaryResponseType>(
       `https://app.tss.sch.ng/api/parents/test-summary/${regnum}?status=${status}`,
@@ -168,4 +168,73 @@ export const fetchResult = async ({ token, id, page, limit }: FetchResult) => {
     }
   );
   return data.data;
+};
+
+export const fetchAssignment = async ({
+  id,
+  studentId,
+  token,
+}: SingleAssignmentParams) => {
+  try {
+    const { data } = await axios.get<AssignmentResponse>(
+      `${baseUrl}/parents/assignments/${id}/view/${studentId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`${error}`);
+  }
+};
+export const startAssignment = async ({
+  id,
+  studentId,
+  token,
+}: SingleAssignmentParams) => {
+  try {
+    const { data } = await axios.get<AssignmentResponse>(
+      `${baseUrl}/parents/assignments/${id}/start/${studentId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log({ data });
+
+    return data.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`${error}`);
+  }
+};
+export const takeAssignment = async ({
+  id,
+  studentId,
+  token,
+  answers,
+  details,
+}: SingleAssignmentParams & ResponseAssignmentType) => {
+  try {
+    const { data } = await axios.post<TakeTestType>(
+      `${baseUrl}/parents/assignments/${id}/take/${studentId}`,
+      {
+        answers,
+        details,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`${error}`);
+  }
 };

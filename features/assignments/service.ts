@@ -13,8 +13,6 @@ export const fetchAssignments = async ({
   limit,
   status,
 }: PaginateRequestType) => {
-  console.log({ status });
-
   const { data } = await axios.get<AssignmentsResponse>(
     `${baseUrl}/parents/assignments?page=${page}&limit=${limit}&status=${status}`,
     {

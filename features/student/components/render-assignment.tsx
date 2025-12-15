@@ -25,9 +25,9 @@ export const RenderAssignments = ({
       onRefresh={onRefresh}
       onEndReachedThreshold={0.5}
       refreshing={refreshing}
-      // onEndReached={onScrollMore}
+      onEndReached={onScrollMore}
       showsHorizontalScrollIndicator={false}
-      keyExtractor={(item) => item?.assignment?.id.toString()}
+      keyExtractor={(item) => item?.setassignment?.id.toString()}
       contentContainerStyle={{ paddingHorizontal: 15, gap: 15 }}
       renderItem={({ item }) => <AssignmentCard item={item} />}
       showsVerticalScrollIndicator={false}

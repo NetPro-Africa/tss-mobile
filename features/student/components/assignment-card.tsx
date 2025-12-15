@@ -24,8 +24,12 @@ type Props = {
 export const AssignmentCard = ({ item }: Props) => {
   const open = format(item.setassignment.opendate, 'P HH:mm');
   const close = format(item.setassignment.closedate, 'P HH:mm');
+
   return (
-    <Link href={'/'} asChild>
+    <Link
+      href={`/assignment/view?id=${item.setassignment.id}&student=${item.student.id}`}
+      asChild
+    >
       <Card style={styles.card}>
         <CardContent>
           <CardHeader style={{ flexDirection: 'column' }}>
@@ -72,7 +76,14 @@ export const AssignmentCard = ({ item }: Props) => {
           </CardHeader>
 
           <CardFooter>
-            <Stack direction="row" gap={8} mt={10}>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              gap={8}
+              mt={10}
+              flex={1}
+            >
               <View
                 style={{
                   paddingHorizontal: 10,
@@ -84,6 +95,11 @@ export const AssignmentCard = ({ item }: Props) => {
               >
                 <NormalText style={{ color: colors.white }}>
                   {changeFirstLetterToCapital(item.status)}
+                </NormalText>
+              </View>
+              <View style={{ flex: 1 }}>
+                <NormalText style={{ textAlign: 'right' }}>
+                  {item.student.fullname}
                 </NormalText>
               </View>
             </Stack>

@@ -33,7 +33,7 @@ export const AssignmentsCarousel = () => {
     );
   }
 
-  if (!data || (data as AssignmentsResponse).data.length === 0) {
+  if (!data || (data as AssignmentsResponse).data.assignments.length === 0) {
     const textColor = Colors[colorScheme ?? 'light'].text;
     return (
       <Card style={{ height: 180 }}>
@@ -47,14 +47,14 @@ export const AssignmentsCarousel = () => {
     );
   }
 
-  const items = (data as AssignmentsResponse).data;
+  const items = (data as AssignmentsResponse).data.assignments;
   return (
     <FlatList
       data={items}
       horizontal
       pagingEnabled
       showsHorizontalScrollIndicator={false}
-      keyExtractor={(item) => item?.assignment?.id.toString()}
+      keyExtractor={(item) => item?.setassignment?.id.toString()}
       contentContainerStyle={{ paddingHorizontal: 15, gap: 15 }}
       renderItem={({ item }) => <AssignmentCard item={item} />}
     />

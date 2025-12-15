@@ -93,23 +93,21 @@ export type AssignmentType2 = {
   datecreated: string; // ISO datetime string
 };
 
-type StudentType = {
-  id: number;
-  regno: string;
-  fullname: string;
-};
-
 export type AssignmentItemType = {
   student: StudentType;
   assignment: AssignmentType2;
   setassignment: SetAssignment;
   status: 'completed' | 'available';
 };
+type AssignmentData = {
+  assignments: AssignmentItemType[];
+  pagination: Pagination;
+};
 
 export type AssignmentsResponse = {
   success: true;
   message: string;
-  data: AssignmentItemType[];
+  data: AssignmentData;
   meta: {
     timestamp: string; // ISO datetime string
     version: string;
@@ -160,9 +158,134 @@ export type Pagination = {
   page: number;
   limit: number;
   count: number;
+  total_pages: number;
+  total: number;
 };
 
 export type Meta = {
   timestamp: string;
   version: string;
+};
+
+export type AssignmentResponse = {
+  success: boolean;
+  message: string;
+  data: AssignmentDataType;
+  meta: Meta;
+};
+
+export type AssignmentDataType = {
+  student: Student;
+  setassignment: SetAssignment;
+  questions: QuestionDataType[];
+  assignment_status: string;
+  start_time: string;
+  total_questions: number;
+  time_limit: number | null;
+};
+
+export type StudentType = {
+  id: number;
+  regno: string;
+  fullname: string;
+};
+
+export type SetAssignmentType = {
+  id: number;
+  title: string;
+  subject_id: number;
+  details: string;
+  test_type: string;
+  total_questions: number;
+  time_limit: number | null;
+  passing_score: number;
+  teacher_id: number;
+  semester_id: number;
+  status: string;
+  closedate: string;
+  opendate: string;
+  datecreated: string;
+  teacher: Teacher;
+  subject: SubjectDataType;
+};
+
+export type TeacherType = {
+  id: number;
+  user_id: number;
+  gender: string;
+  address: string;
+  country_id: number;
+  state_id: number;
+  phone: string;
+  profile: string;
+  cv: string;
+  qualification: string;
+  date_created: string;
+  passport: string;
+  firstname: string;
+  lastname: string;
+  middlename: string;
+  department_id: number;
+  staffgrade_id: number;
+  staffdepartment_id: number;
+};
+
+export type SubjectDataType = {
+  id: number;
+  name: string;
+  subjectcode: string;
+  department_id: number;
+  creditload: number;
+  user_id: number;
+  created_date: string;
+  status: number;
+  semester_id: number;
+  level_id: number;
+};
+
+export type QuestionDataType = {
+  id: number;
+  setassignment_id: number;
+  question_text: string;
+  question_type: 'multiple_choice' | 'theory' | string; // extend with additional types as needed
+  points: number;
+  order_number: number;
+  difficulty_level: string;
+  created: string;
+  modified: string;
+  question_options: QuestionOptionType[];
+};
+
+export type QuestionOptionType = {
+  id: number;
+  question_id: number;
+  option_text: string;
+  order_number: number;
+  created: string;
+  modified: string;
+};
+
+export type TakeTestType = {
+  success: boolean;
+  message: string;
+  data: {
+    assignment: {
+      id: number;
+      student_id: number;
+      setassignment_id: number;
+      subject_id: number;
+      details: string;
+      status: string;
+      start_time: string;
+      end_time: string;
+      score: number | null;
+      remarks: string | null;
+      datecreated: string;
+    };
+    answers_saved: number;
+  };
+  meta: {
+    timestamp: string;
+    version: string;
+  };
 };

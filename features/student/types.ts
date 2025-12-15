@@ -389,3 +389,16 @@ export type ResultApiResponse = {
 };
 
 export type assignmentStatus = 'pending' | 'submitted' | 'graded' | 'available';
+
+export type SingleAssignmentParams = {
+  id: string;
+  studentId: string;
+  token?: string;
+};
+
+export type ResponseAssignmentType = {
+  details: string;
+  answers: {
+    [questionId: string]: number | string;
+  };
+};
