@@ -13,14 +13,14 @@
       "distribution": "internal",
       "channel": "preview",
       "env": {
-        "EXPO_PUBLIC_BASE_URL": "https://app.tss.sch.ng/api/"
+        "EXPO_PUBLIC_BASE_URL": "https://portal.tss.sch.ng/api/v1"
       }
     },
     "production": {
       "autoIncrement": true,
       "channel": "production",
       "env": {
-        "EXPO_PUBLIC_BASE_URL": "https://app.tss.sch.ng/api/"
+        "EXPO_PUBLIC_BASE_URL": "https://portal.tss.sch.ng/api/v1"
       }
     }
   },

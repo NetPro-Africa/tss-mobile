@@ -1,80 +1,29 @@
-import * as FileSystem from 'expo-file-system';
-import * as MediaLibrary from 'expo-media-library';
+import { Directory, File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import { Alert, Platform } from 'react-native';
-
-export const requestPermissions = async () => {
-  if (Platform.OS === 'android') {
-    const { status } = await MediaLibrary.requestPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert(
-        'Permission Required',
-        'Please grant media library permission to save PDF files.'
-      );
-      return false;
-    }
-  }
-  return true;
-};
 
 // Save PDF to device storage
 export const savePDFToDevice = async (uri: string, filename: string) => {
+  const mime = 'application/pdf';
+
+  const destination = new Directory(Paths.document);
   try {
-    const hasPermission = await requestPermissions();
-    if (!hasPermission) return;
+    // Download once to app cache
+    const downloaded = await File.downloadFileAsync(uri, destination);
+    if (!downloaded.uri) throw new Error('Download failed');
 
-    if (Platform.OS === 'ios') {
-      // iOS: Use sharing
-      await Sharing.shareAsync(uri, {
-        mimeType: 'application/pdf',
-        dialogTitle: 'Save PDF',
-        UTI: 'com.adobe.pdf',
-      });
-    } else {
-      // Android: Use Storage Access Framework
-      const permissions =
-        await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
-
-      if (permissions.granted) {
-        // Read the file as base64
-        const base64Data = await FileSystem.readAsStringAsync(uri, {
-          encoding: FileSystem.EncodingType.Base64,
-        });
-
-        // Create and write to the file in the selected directory
-        await FileSystem.StorageAccessFramework.createFileAsync(
-          permissions.directoryUri,
-          filename,
-          'application/pdf'
-        )
-          .then(async (newUri) => {
-            await FileSystem.writeAsStringAsync(newUri, base64Data, {
-              encoding: FileSystem.EncodingType.Base64,
-            });
-
-            Alert.alert('Success', `PDF saved as ${filename}`, [
-              {
-                text: 'Share',
-                onPress: () => Sharing.shareAsync(uri),
-              },
-              { text: 'OK' },
-            ]);
-          })
-          .catch((error) => {
-            console.error('Error creating file:', error);
-            Alert.alert('Error', 'Failed to save PDF. Please try again.');
-          });
-      } else {
-        // Fallback to sharing if permissions not granted
-        await Sharing.shareAsync(uri, {
-          mimeType: 'application/pdf',
-          dialogTitle: 'Save PDF',
-        });
-      }
+    // One-time open/share, avoids persistent media permissions
+    if (await Sharing.isAvailableAsync()) {
+      await Sharing.shareAsync(downloaded.uri, { mimeType: mime });
+      return 'shared';
     }
+    return 'saved';
   } catch (error) {
-    console.error('Error saving PDF:', error);
-    Alert.alert('Error', 'Failed to save PDF. Please try again.');
+    console.error(`Download Error (${filename}):`, error);
+    throw new Error(
+      `Failed to download ${filename}: ${
+        error instanceof Error ? error.message : 'Unknown error'
+      }`
+    );
   }
 };
 
