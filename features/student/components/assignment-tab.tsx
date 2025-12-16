@@ -9,7 +9,7 @@ import { assignmentStatus } from '../types';
 import { FetchAssignments } from './fetch-assignments';
 
 export function AssignmentTabs() {
-  const [value, setValue] = React.useState<assignmentStatus>('pending');
+  const [value, setValue] = React.useState<assignmentStatus>('available');
 
   const colorScheme = useColorScheme();
   const purpleColor = Colors[colorScheme ?? 'light'].question;
@@ -24,11 +24,11 @@ export function AssignmentTabs() {
           className="border border-zinc-800 items-center  rounded-sm p-1"
         >
           <SegmentedControl.Item
-            value="pending"
-            className={`flex-1 py-3 px-4  transition-all !bg-transparent duration-200 ${
-              value === 'pending'
+            value="available"
+            className={`flex-1 py-3 px-4  bg-transparent transition-all duration-200 ${
+              value === 'available'
                 ? `border-b-2 border-[${purpleColor}]`
-                : 'border-b-2 border-transparent bg-transparent'
+                : 'border-b-2 border-transparent'
             }`}
           >
             <View className="flex-row items-center justify-center space-x-2">
@@ -40,7 +40,7 @@ export function AssignmentTabs() {
                   },
                 ]}
               >
-                Pending
+                Available
               </MediumText>
             </View>
           </SegmentedControl.Item>
@@ -66,11 +66,11 @@ export function AssignmentTabs() {
             </View>
           </SegmentedControl.Item>
           <SegmentedControl.Item
-            value="available"
-            className={`flex-1 py-3 px-4  bg-transparent transition-all duration-200 ${
-              value === 'available'
+            value="pending"
+            className={`flex-1 py-3 px-4  transition-all !bg-transparent duration-200 ${
+              value === 'pending'
                 ? `border-b-2 border-[${purpleColor}]`
-                : 'border-b-2 border-transparent'
+                : 'border-b-2 border-transparent bg-transparent'
             }`}
           >
             <View className="flex-row items-center justify-center space-x-2">
@@ -82,10 +82,11 @@ export function AssignmentTabs() {
                   },
                 ]}
               >
-                Available
+                Pending
               </MediumText>
             </View>
           </SegmentedControl.Item>
+
           <SegmentedControl.Item
             value="graded"
             className={`flex-1 py-3 px-4  bg-transparent transition-all duration-200 ${

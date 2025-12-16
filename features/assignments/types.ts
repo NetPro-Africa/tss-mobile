@@ -1,13 +1,3 @@
-export type AssignmentType = {
-  testid: string;
-  regnum: string;
-  subjectName: string;
-  assessment: string;
-  session: string;
-  totalQuestions: number;
-  currentQuestion: number;
-  questions: QuestionType[];
-};
 export type FetchAssignmentSuccessResponseType = {
   success: boolean;
   message: string;
@@ -179,6 +169,7 @@ export type AssignmentDataType = {
   setassignment: SetAssignment;
   questions: QuestionDataType[];
   assignment_status: string;
+  assignment: AssignmentType;
   start_time: string;
   total_questions: number;
   time_limit: number | null;
@@ -269,23 +260,29 @@ export type TakeTestType = {
   success: boolean;
   message: string;
   data: {
-    assignment: {
-      id: number;
-      student_id: number;
-      setassignment_id: number;
-      subject_id: number;
-      details: string;
-      status: string;
-      start_time: string;
-      end_time: string;
-      score: number | null;
-      remarks: string | null;
-      datecreated: string;
-    };
+    assignment: AssignmentType;
     answers_saved: number;
   };
   meta: {
     timestamp: string;
     version: string;
   };
+};
+
+export type AssignmentType = {
+  datecreated: string;
+  details: string;
+  end_time: string | null;
+  graded_at: string | null;
+  id: number;
+  session_id: number;
+  setassignment_id: number;
+  start_time: string;
+  status: string;
+  student_id: number;
+  subject_id: number;
+  score: number | null;
+  remarks: string | null;
+  teacher_comment: string;
+  total_score: number | null;
 };

@@ -18,9 +18,8 @@ import {
 } from '@/features/student/api/use-get-assignment';
 import { MCOptions } from '@/features/student/components/assignment-start/mc-options';
 import { TheoryInput } from '@/features/student/components/assignment-start/theory-input';
-import { TimerDisplay } from '@/features/student/components/assignment-start/timer-display';
 import { useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
@@ -30,7 +29,6 @@ const StartAssignment = () => {
     id: string;
     student: string;
   }>();
-  console.log({ id, student });
 
   const { data, isPending, isError } = useStartAssignment({
     id,
@@ -38,46 +36,18 @@ const StartAssignment = () => {
   });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number | string>>({});
-  const [details, setDetails] = useState('');
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const mutation = useSubmitAssignment({
+  const { mutateAsync, isPending: isSubmitting } = useSubmitAssignment({
     id,
     studentId: student,
     answers,
-    details,
+    details: data?.assignment?.details ?? '',
   });
 
   const payload = data as AssignmentDataType;
 
   const questions = (payload?.questions as QuestionDataType[]) ?? [];
   const current = questions[currentIndex] ?? ({} as QuestionDataType);
-
-  const endTimestamp = useMemo(() => {
-    if (!payload?.start_time || !payload?.time_limit) return null;
-    const start = new Date(String(payload.start_time).replace(' ', 'T'));
-    return start.getTime() + Number(payload.time_limit) * 60 * 1000;
-  }, [payload?.start_time, payload?.time_limit]);
-
-  const [remaining, setRemaining] = useState<number>(0);
-
-  useEffect(() => {
-    if (!endTimestamp) return;
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      const next = Math.max(0, Math.floor((endTimestamp - Date.now()) / 1000));
-      setRemaining(next);
-      if (next === 0) {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-        if (!mutation.isPending) {
-          mutation.mutate();
-        }
-      }
-    }, 1000);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [endTimestamp, mutation]);
 
   const onSelectMC = (optionId: number) => {
     setAnswers((prev) => ({ ...prev, [String(current.id)]: optionId }));
@@ -88,14 +58,19 @@ const StartAssignment = () => {
   const onPrevious = () => {
     if (currentIndex > 0) setCurrentIndex((i) => i - 1);
   };
-  const onNext = () => {
-    if (currentIndex < questions.length - 1) setCurrentIndex((i) => i + 1);
-  };
-  const onSubmit = () => {
-    if (!mutation.isPending) {
-      mutation.mutate();
+  const onSubmit = async () => {
+    if (!isSubmitting) {
+      await mutateAsync();
     }
   };
+  const onNext = () => {
+    if (currentIndex < questions.length - 1) {
+      setCurrentIndex((i) => i + 1);
+    } else {
+      onSubmit();
+    }
+  };
+  const isLastQuestion = currentIndex === questions.length - 1;
 
   return (
     <Wrapper>
@@ -103,7 +78,7 @@ const StartAssignment = () => {
       {isPending ? (
         <LoadingLists
           renderItem={() => <LoadingCard height={200} width={width - 30} />}
-          length={4}
+          length={2}
         />
       ) : isError ? (
         <Stack style={{ paddingHorizontal: 15 }}>
@@ -111,7 +86,6 @@ const StartAssignment = () => {
         </Stack>
       ) : (
         <Stack gap={12} style={{ paddingHorizontal: 15 }}>
-          {endTimestamp && <TimerDisplay remainingSeconds={remaining} />}
           <Stack gap={6}>
             <MediumText>{current.question_text}</MediumText>
             <NormalText style={{ opacity: 0.8 }}>
@@ -135,9 +109,12 @@ const StartAssignment = () => {
           )}
           <Stack direction="row" justifyContent="space-between" gap={10}>
             <NormalButton buttonText="Previous" onPress={onPrevious} />
-            <NormalButton buttonText="Next" onPress={onNext} />
+            <NormalButton
+              buttonText={isLastQuestion ? 'Submit' : 'Next'}
+              onPress={onNext}
+              disabled={isSubmitting}
+            />
           </Stack>
-          <NormalButton buttonText="Submit" onPress={onSubmit} />
         </Stack>
       )}
     </Wrapper>

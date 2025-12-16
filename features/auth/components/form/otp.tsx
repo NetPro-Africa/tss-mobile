@@ -26,8 +26,6 @@ export const AppleOTPInput = ({ maxLength = 4, onComplete }: Props) => {
   const ref = useRef<OTPInputRef>(null);
   const onFinish = (code: string) => {
     onComplete(code);
-
-    ref.current?.clear();
   };
 
   return (
