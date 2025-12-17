@@ -1,40 +1,29 @@
+import { Text } from '@/components/ui/text';
 import { EmptyUi } from '@/features/shared/components/empty-ui';
 import { LoadingCard } from '@/features/shared/components/loading-card';
 import { LoadingLists } from '@/features/shared/components/loading-lists';
 import { useGetResult } from '@/features/student/api/use-results';
-import { useStudent } from '@/features/student/store/useStudent';
-import type { ResultItem, StudentResponseData } from '@/features/student/types';
-import React, { useEffect, useState } from 'react';
-import { FlatList, useWindowDimensions } from 'react-native';
+import React from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { ResultItemCard } from './result-item';
-
 export const RenderResults = () => {
-  const student = useStudent((s) => s.student);
-  const { data, isPending, isError } = useGetResult();
-  const [items, setItems] = useState<ResultItem[]>([]);
-  const [page, setPage] = useState<number>(1);
+  const {
+    data,
+    isFetching,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+
+    isPending,
+  } = useGetResult();
+
   const { width } = useWindowDimensions();
-  const dataMemo = data as StudentResponseData | undefined;
-  const pagination = dataMemo?.pagination;
-
-  useEffect(() => {
-    // reset when student changes
-    setPage(1);
-    setItems([]);
-  }, [student?.id]);
-
-  useEffect(() => {
-    if (dataMemo?.results) {
-      if (page === 1) setItems(dataMemo.results);
-      else setItems((prev) => [...prev, ...dataMemo.results]);
-    }
-  }, [dataMemo?.results, page]);
-
-  const onEndReached = () => {
-    if (!pagination) return;
-    if (pagination.page >= pagination.total_pages) return;
-    setPage((p) => p + 1);
-  };
 
   if (isError) {
     throw new Error('Failed to load results');
@@ -49,16 +38,50 @@ export const RenderResults = () => {
       />
     );
   }
-
+  console.log(
+    data?.pages.map((d) => d.pagination.total_pages),
+    data.pageParams
+  );
+  const totalPages = data?.pages.flatMap((d) => d.pagination.total_pages)[0];
+  const pageParams = data.pageParams[data.pageParams.length - 1] as number;
+  console.log({ totalPages, pageParams });
+  const finalPage = pageParams === totalPages;
+  const onEndReached = () => {
+    if (!finalPage && hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  };
   return (
     <FlatList
-      data={items}
+      data={data?.pages.flatMap((d) => d.results)}
       renderItem={({ item }) => <ResultItemCard item={item} />}
-      keyExtractor={(item, i) => item.id.toString() + i}
-      contentContainerStyle={{ gap: 15, paddingHorizontal: 15 }}
+      keyExtractor={(item, i) => item.toString() + i}
+      contentContainerStyle={{
+        gap: 15,
+        paddingHorizontal: 15,
+        paddingBottom: 100,
+      }}
       onEndReachedThreshold={0.4}
       onEndReached={onEndReached}
       ListEmptyComponent={() => <EmptyUi message="No results yet" />}
+      showsVerticalScrollIndicator={false}
+      ListFooterComponent={() =>
+        isFetchingNextPage ? (
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingVertical: 20,
+            }}
+          >
+            <ActivityIndicator />
+          </View>
+        ) : finalPage ? (
+          <Text style={{ textAlign: 'center', paddingVertical: 20 }}>
+            Nothing more to load
+          </Text>
+        ) : null
+      }
     />
   );
 };

@@ -25,6 +25,16 @@ export default function HomeScreen() {
         contentContainerStyle={{ gap: 20, paddingBottom: 100 }}
       >
         <FetchStudent />
+        {/* <Button
+          title="Save PDF"
+          onPress={() =>
+            savePDFToDevice(
+              'https://pdfobject.com/pdf/sample.pdf',
+              'example.pdf'
+            )
+          }
+          height={50}
+        /> */}
         <AssignmentsCarousel />
         <FetchAttendance />
         <FetchEvents horizontal />

@@ -11,7 +11,6 @@ export const useGetAssignments = ({
   status = 'available',
 }: Partial<PaginateRequestType>) => {
   const token = useAuth((state) => state.user?.token!);
-
   return useQuery({
     queryKey: ['assignments', token, page, status],
     queryFn: async () => {

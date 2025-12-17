@@ -1493,7 +1493,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - react-native-menu (1.2.3):
+  - react-native-menu (2.0.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2699,7 +2699,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: d77e0c426fce34c23227394c96ca1033b30c813c
   react-native-ios-context-menu: 4da7429c7b109d09aa059a6210eb64808f84cb9d
   react-native-ios-utilities: 34ffb7109843010b6ade9e690d35c48080c17ded
-  react-native-menu: 7abe476a25b9b2da7b473d2f2a47a9f926c22038
+  react-native-menu: 17321e8d0d15af018c56ae7e4e42268ef297f6c3
   react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
   react-native-safe-area-context: 53f796cb6c814661bbe99fbdfd0585d07b996cdd
   react-native-view-shot: 26174e54ec6b4b7c5d70b86964b747919759adc1

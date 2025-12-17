@@ -1,29 +1,28 @@
 import { Directory, File, Paths } from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
+import { toast } from 'sonner-native';
 
 // Save PDF to device storage
 export const savePDFToDevice = async (uri: string, filename: string) => {
-  const mime = 'application/pdf';
+  // const mime = 'application/pdf';
 
   const destination = new Directory(Paths.document);
   try {
     // Download once to app cache
+    if (!destination.exists) {
+      destination.create();
+    }
     const downloaded = await File.downloadFileAsync(uri, destination);
     if (!downloaded.uri) throw new Error('Download failed');
 
-    // One-time open/share, avoids persistent media permissions
-    if (await Sharing.isAvailableAsync()) {
-      await Sharing.shareAsync(downloaded.uri, { mimeType: mime });
-      return 'shared';
-    }
-    return 'saved';
+    // // One-time open/share, avoids persistent media permissions
+    // if (await Sharing.isAvailableAsync()) {
+    //   await Sharing.shareAsync(downloaded.uri, { mimeType: mime });
+    // }
+    toast.success('PDF saved successfully');
   } catch (error) {
     console.error(`Download Error (${filename}):`, error);
-    throw new Error(
-      `Failed to download ${filename}: ${
-        error instanceof Error ? error.message : 'Unknown error'
-      }`
-    );
+
+    toast.error(`Failed to save as PDF`);
   }
 };
 
