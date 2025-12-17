@@ -23,3 +23,7 @@ export const trimText = (text: string, length: number) => {
 export const changeFirstLetterToCapital = (text: string) => {
   return text.charAt(0).toUpperCase() + text.slice(1);
 };
+
+export const changeRemoveAllUnderScore = (text: string) => {
+  return text.replace(/_/g, ' ');
+};

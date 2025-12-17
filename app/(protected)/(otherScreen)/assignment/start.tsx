@@ -17,6 +17,7 @@ import {
   useSubmitAssignment,
 } from '@/features/student/api/use-get-assignment';
 import { MCOptions } from '@/features/student/components/assignment-start/mc-options';
+import { SubmitSummary } from '@/features/student/components/assignment-start/submit-summary';
 import { TheoryInput } from '@/features/student/components/assignment-start/theory-input';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
@@ -36,6 +37,7 @@ const StartAssignment = () => {
   });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number | string>>({});
+  const [showSummary, setShowSummary] = useState(false);
 
   const { mutateAsync, isPending: isSubmitting } = useSubmitAssignment({
     id,
@@ -56,6 +58,10 @@ const StartAssignment = () => {
     setAnswers((prev) => ({ ...prev, [String(current.id)]: text }));
   };
   const onPrevious = () => {
+    if (showSummary) {
+      setShowSummary(false);
+      return;
+    }
     if (currentIndex > 0) setCurrentIndex((i) => i - 1);
   };
   const onSubmit = async () => {
@@ -67,14 +73,18 @@ const StartAssignment = () => {
     if (currentIndex < questions.length - 1) {
       setCurrentIndex((i) => i + 1);
     } else {
-      onSubmit();
+      setShowSummary(true);
     }
+  };
+  const onEdit = (index: number) => {
+    setCurrentIndex(index);
+    setShowSummary(false);
   };
   const isLastQuestion = currentIndex === questions.length - 1;
 
   return (
     <Wrapper>
-      <Header title="Start Assignment" />
+      <Header title={showSummary ? 'Review Assignment' : 'Start Assignment'} />
       {isPending ? (
         <LoadingLists
           renderItem={() => <LoadingCard height={200} width={width - 30} />}
@@ -85,36 +95,50 @@ const StartAssignment = () => {
           <NormalText>Failed to get assignment</NormalText>
         </Stack>
       ) : (
-        <Stack gap={12} style={{ paddingHorizontal: 15 }}>
-          <Stack gap={6}>
-            <MediumText>{current.question_text}</MediumText>
-            <NormalText style={{ opacity: 0.8 }}>
-              {payload?.setassignment?.subject?.name}
-            </NormalText>
-            <NormalText>
-              Question {currentIndex + 1} of {payload?.total_questions}
-            </NormalText>
-          </Stack>
-          {current.question_type === 'multiple_choice' ? (
-            <MCOptions
-              options={current.question_options}
-              selectedOptionId={Number(answers[String(current.id)] as number)}
-              onSelect={onSelectMC}
+        <Stack gap={12} style={{ paddingHorizontal: 15, flex: 1 }}>
+          {showSummary ? (
+            <SubmitSummary
+              questions={questions}
+              answers={answers}
+              onSubmit={onSubmit}
+              isSubmitting={isSubmitting}
+              onEdit={onEdit}
             />
           ) : (
-            <TheoryInput
-              value={String(answers[String(current.id)] ?? '')}
-              onChange={onChangeTheory}
-            />
+            <>
+              <Stack gap={6}>
+                <MediumText>{current.question_text}</MediumText>
+                <NormalText style={{ opacity: 0.8 }}>
+                  {payload?.setassignment?.subject?.name}
+                </NormalText>
+                <NormalText>
+                  Question {currentIndex + 1} of {payload?.total_questions}
+                </NormalText>
+              </Stack>
+              {current.question_type === 'multiple_choice' ? (
+                <MCOptions
+                  options={current.question_options}
+                  selectedOptionId={Number(
+                    answers[String(current.id)] as number
+                  )}
+                  onSelect={onSelectMC}
+                />
+              ) : (
+                <TheoryInput
+                  value={String(answers[String(current.id)] ?? '')}
+                  onChange={onChangeTheory}
+                />
+              )}
+              <Stack direction="row" justifyContent="space-between" gap={10}>
+                <NormalButton buttonText="Previous" onPress={onPrevious} />
+                <NormalButton
+                  buttonText={isLastQuestion ? 'Review' : 'Next'}
+                  onPress={onNext}
+                  disabled={isSubmitting}
+                />
+              </Stack>
+            </>
           )}
-          <Stack direction="row" justifyContent="space-between" gap={10}>
-            <NormalButton buttonText="Previous" onPress={onPrevious} />
-            <NormalButton
-              buttonText={isLastQuestion ? 'Submit' : 'Next'}
-              onPress={onNext}
-              disabled={isSubmitting}
-            />
-          </Stack>
         </Stack>
       )}
     </Wrapper>

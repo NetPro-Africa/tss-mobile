@@ -1,5 +1,6 @@
 import { AssignmentItemType } from '@/features/assignments/types';
 import { EmptyUi } from '@/features/shared/components/empty-ui';
+import { changeRemoveAllUnderScore } from '@/features/shared/utils';
 import { FlatList } from 'react-native';
 import { AssignmentCard } from './assignment-card';
 
@@ -31,7 +32,11 @@ export const RenderAssignments = ({
       contentContainerStyle={{ paddingHorizontal: 15, gap: 15 }}
       renderItem={({ item }) => <AssignmentCard item={item} />}
       showsVerticalScrollIndicator={false}
-      ListEmptyComponent={<EmptyUi message={`No ${status} assignments yet`} />}
+      ListEmptyComponent={
+        <EmptyUi
+          message={`No ${changeRemoveAllUnderScore(status)} assignments yet`}
+        />
+      }
     />
   );
 };

@@ -388,7 +388,7 @@ export type ResultApiResponse = {
   };
 };
 
-export type assignmentStatus = 'pending' | 'submitted' | 'graded' | 'available';
+export type assignmentStatus = 'in_progress' | 'completed' | 'available';
 
 export type SingleAssignmentParams = {
   id: string;

@@ -45,30 +45,9 @@ export function AssignmentTabs() {
             </View>
           </SegmentedControl.Item>
           <SegmentedControl.Item
-            value="submitted"
-            className={`flex-1 py-3 px-4  bg-transparent transition-all duration-200 ${
-              value === 'submitted'
-                ? `border-b-2 border-[${purpleColor}]`
-                : 'border-b-2 border-transparent'
-            }`}
-          >
-            <View className="flex-row items-center justify-center space-x-2">
-              <MediumText
-                style={[
-                  styles.container,
-                  {
-                    color: darkColor,
-                  },
-                ]}
-              >
-                Submitted
-              </MediumText>
-            </View>
-          </SegmentedControl.Item>
-          <SegmentedControl.Item
-            value="pending"
+            value="in_progress"
             className={`flex-1 py-3 px-4  transition-all !bg-transparent duration-200 ${
-              value === 'pending'
+              value === 'in_progress'
                 ? `border-b-2 border-[${purpleColor}]`
                 : 'border-b-2 border-transparent bg-transparent'
             }`}
@@ -82,15 +61,14 @@ export function AssignmentTabs() {
                   },
                 ]}
               >
-                Pending
+                In progress
               </MediumText>
             </View>
           </SegmentedControl.Item>
-
           <SegmentedControl.Item
-            value="graded"
+            value="completed"
             className={`flex-1 py-3 px-4  bg-transparent transition-all duration-200 ${
-              value === 'graded'
+              value === 'completed'
                 ? `border-b-2 border-[${purpleColor}]`
                 : 'border-b-2 border-transparent'
             }`}
@@ -104,7 +82,7 @@ export function AssignmentTabs() {
                   },
                 ]}
               >
-                Graded
+                Completed
               </MediumText>
             </View>
           </SegmentedControl.Item>
