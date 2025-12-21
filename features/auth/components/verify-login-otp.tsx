@@ -10,7 +10,6 @@ import { CustomPressable } from '@/features/shared/components/ui/custom-pressabl
 import { Header } from '@/features/shared/components/ui/header';
 import { Stack } from '@/features/shared/components/ui/stack';
 import { Wrapper } from '@/features/shared/components/ui/wrapper';
-import { colors } from '@/features/shared/constants';
 import { useTimer } from '@/features/shared/hooks/use-timer';
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
@@ -68,7 +67,7 @@ export const VerifyLoginOTP = () => {
             <MediumText
               style={{
                 fontSize: RFValue(10),
-                color: colors.purple,
+                // color: colors.purple,
                 opacity: disabled ? 0.5 : 1,
               }}
             >

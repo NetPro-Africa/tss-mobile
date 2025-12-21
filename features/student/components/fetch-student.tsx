@@ -2,6 +2,7 @@ import { LoadingBar } from '@/features/shared/components/loading-bar';
 import { MediumText } from '@/features/shared/components/typography';
 import { Stack } from '@/features/shared/components/ui/stack';
 import { useAuth } from '@/features/shared/store/use-auth';
+import { changeFirstLetterToCapital } from '@/features/shared/utils';
 import React, { useEffect } from 'react';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useGetStudent } from '../api/use-get-student';
@@ -40,6 +41,8 @@ export const FetchStudent = () => {
     name: item.fname + ' ' + item.lname,
     class: item.department.name,
   }));
+  console.log({ student: data[0] });
+
   return (
     <Stack direction="row" justifyContent="space-between" mt={5}>
       <MediumText
@@ -47,7 +50,7 @@ export const FetchStudent = () => {
         numberOfLines={1}
         ellipsizeMode="tail"
       >
-        {fname}
+        {changeFirstLetterToCapital(fname)}
       </MediumText>
       <StudentMenu students={students} />
     </Stack>

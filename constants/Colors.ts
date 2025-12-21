@@ -6,7 +6,7 @@
 import { colors } from '@/features/shared/constants';
 
 const tintColorLight = colors.purple;
-const tintColorDark = '#687076';
+const tintColorDark = '#fff';
 
 export const Colors = {
   light: {

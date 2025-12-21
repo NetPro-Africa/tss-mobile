@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     minHeight: 120,
+    textAlignVertical: 'top',
   },
 });
-

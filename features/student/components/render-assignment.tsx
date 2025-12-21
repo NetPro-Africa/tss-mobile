@@ -30,7 +30,12 @@ export const RenderAssignments = ({
       showsHorizontalScrollIndicator={false}
       keyExtractor={(item) => item?.setassignment?.id.toString()}
       contentContainerStyle={{ paddingHorizontal: 15, gap: 15 }}
-      renderItem={({ item }) => <AssignmentCard item={item} />}
+      renderItem={({ item }) => (
+        <AssignmentCard
+          item={item}
+          navigate={status === 'available' || status === 'in_progress'}
+        />
+      )}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={
         <EmptyUi

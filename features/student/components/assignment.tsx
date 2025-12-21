@@ -35,6 +35,7 @@ export const Assignment = ({ id, studentId }: Props) => {
     throw new Error('Failed to get assignment');
   }
 
+  const isActive = data?.assignment_status === 'in_progress';
   return (
     <View style={{ paddingHorizontal: 15 }}>
       {data && (
@@ -52,11 +53,11 @@ export const Assignment = ({ id, studentId }: Props) => {
           </NormalText>
           <Text
             onPress={() =>
-              router.push(`/assignment/start?id=${id}&student=${studentId}`)
+              router.replace(`/assignment/start?id=${id}&student=${studentId}`)
             }
             style={styles.text}
           >
-            Start
+            {isActive ? 'Continue' : 'Start'}
           </Text>
         </Stack>
       )}

@@ -1,7 +1,6 @@
 import { useAuth } from '@/features/shared/store/use-auth';
 import { handleRetry } from '@/features/shared/utils';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { router } from 'expo-router';
 import { toast } from 'sonner-native';
 import { fetchAssignment, startAssignment, takeAssignment } from '../services';
 import { ResponseAssignmentType, SingleAssignmentParams } from '../types';
@@ -45,7 +44,7 @@ export const useSubmitAssignment = ({
       queryClient.invalidateQueries({
         queryKey: ['assignments'],
       });
-      router.replace('/assignments');
+      // router.replace('/assignments');
       toast.success('Success', {
         description: data?.message || 'Assignment submitted successfully',
       });

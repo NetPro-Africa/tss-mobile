@@ -56,7 +56,7 @@ export const AssignmentsCarousel = () => {
       showsHorizontalScrollIndicator={false}
       keyExtractor={(item) => item?.setassignment?.id.toString()}
       contentContainerStyle={{ paddingHorizontal: 15, gap: 15 }}
-      renderItem={({ item }) => <AssignmentCard item={item} />}
+      renderItem={({ item }) => <AssignmentCard item={item} navigate />}
     />
   );
 };

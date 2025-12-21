@@ -164,6 +164,20 @@ export type AssignmentResponse = {
   meta: Meta;
 };
 
+export type SemesterType = {
+  success: boolean;
+  message: string;
+  data: {
+    semesters: Semester[];
+  };
+  meta: Meta;
+};
+
+export type Semester = {
+  id: number;
+  name: string;
+};
+
 export type AssignmentDataType = {
   student: Student;
   setassignment: SetAssignment;

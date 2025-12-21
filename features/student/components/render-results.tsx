@@ -1,7 +1,7 @@
-import { Text } from '@/components/ui/text';
 import { EmptyUi } from '@/features/shared/components/empty-ui';
 import { LoadingCard } from '@/features/shared/components/loading-card';
 import { LoadingLists } from '@/features/shared/components/loading-lists';
+import { NormalText } from '@/features/shared/components/typography';
 import { useGetResult } from '@/features/student/api/use-results';
 import React from 'react';
 import {
@@ -38,13 +38,10 @@ export const RenderResults = () => {
       />
     );
   }
-  console.log(
-    data?.pages.map((d) => d.pagination.total_pages),
-    data.pageParams
-  );
+
   const totalPages = data?.pages.flatMap((d) => d.pagination.total_pages)[0];
   const pageParams = data.pageParams[data.pageParams.length - 1] as number;
-  console.log({ totalPages, pageParams });
+
   const finalPage = pageParams === totalPages;
   const onEndReached = () => {
     if (!finalPage && hasNextPage && !isFetching) {
@@ -77,9 +74,9 @@ export const RenderResults = () => {
             <ActivityIndicator />
           </View>
         ) : finalPage ? (
-          <Text style={{ textAlign: 'center', paddingVertical: 20 }}>
+          <NormalText style={{ textAlign: 'center', paddingVertical: 20 }}>
             Nothing more to load
-          </Text>
+          </NormalText>
         ) : null
       }
     />

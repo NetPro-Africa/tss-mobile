@@ -9,6 +9,7 @@ import {
   MediumText,
   NormalText,
 } from '@/features/shared/components/typography';
+import { Button } from '@/features/shared/components/ui/button';
 import { Header } from '@/features/shared/components/ui/header';
 import { Stack } from '@/features/shared/components/ui/stack';
 import { Wrapper } from '@/features/shared/components/ui/wrapper';
@@ -19,9 +20,10 @@ import {
 import { MCOptions } from '@/features/student/components/assignment-start/mc-options';
 import { SubmitSummary } from '@/features/student/components/assignment-start/submit-summary';
 import { TheoryInput } from '@/features/student/components/assignment-start/theory-input';
-import { useLocalSearchParams } from 'expo-router';
+import { useAssignmentStore } from '@/features/student/store/use-assignment-store';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -36,10 +38,16 @@ const StartAssignment = () => {
     studentId: student,
   });
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, number | string>>({});
+  const { assignments, setAnswer, clearAssignment } = useAssignmentStore();
+  const answers = assignments[id]?.answers || {};
   const [showSummary, setShowSummary] = useState(false);
 
-  const { mutateAsync, isPending: isSubmitting } = useSubmitAssignment({
+  const {
+    mutateAsync,
+    isPending: isSubmitting,
+    isSuccess,
+    data: result,
+  } = useSubmitAssignment({
     id,
     studentId: student,
     answers,
@@ -52,10 +60,10 @@ const StartAssignment = () => {
   const current = questions[currentIndex] ?? ({} as QuestionDataType);
 
   const onSelectMC = (optionId: number) => {
-    setAnswers((prev) => ({ ...prev, [String(current.id)]: optionId }));
+    setAnswer(id, String(current.id), optionId);
   };
   const onChangeTheory = (text: string) => {
-    setAnswers((prev) => ({ ...prev, [String(current.id)]: text }));
+    setAnswer(id, String(current.id), text);
   };
   const onPrevious = () => {
     if (showSummary) {
@@ -66,7 +74,12 @@ const StartAssignment = () => {
   };
   const onSubmit = async () => {
     if (!isSubmitting) {
-      await mutateAsync();
+      try {
+        await mutateAsync();
+        clearAssignment(id);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   const onNext = () => {
@@ -81,6 +94,58 @@ const StartAssignment = () => {
     setShowSummary(false);
   };
   const isLastQuestion = currentIndex === questions.length - 1;
+
+  if (isSuccess && result) {
+    return (
+      <Wrapper>
+        <Header title="Submission Summary" />
+        <Stack
+          style={{
+            padding: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          gap={20}
+        >
+          <MediumText style={{ fontSize: 22, textAlign: 'center' }}>
+            {result.message}
+          </MediumText>
+
+          <Stack
+            style={{
+              width: '100%',
+              backgroundColor: 'rgba(0,0,0,0.03)',
+              padding: 15,
+              borderRadius: 10,
+            }}
+            gap={10}
+          >
+            <Stack direction="row" justifyContent="space-between">
+              <NormalText>Status:</NormalText>
+              <MediumText style={{ textTransform: 'capitalize' }}>
+                {result.data.assignment.status}
+              </MediumText>
+            </Stack>
+            <Stack direction="row" justifyContent="space-between">
+              <NormalText>Answers Saved:</NormalText>
+              <MediumText>{result.data.answers_saved}</MediumText>
+            </Stack>
+            <Stack direction="row" justifyContent="space-between">
+              <NormalText>Submitted On:</NormalText>
+              <MediumText>{new Date().toLocaleDateString()}</MediumText>
+            </Stack>
+          </Stack>
+
+          <View style={{ height: 50 }}>
+            <Button
+              title="Back to Assignments"
+              onPress={() => router.replace('/assignments')}
+            />
+          </View>
+        </Stack>
+      </Wrapper>
+    );
+  }
 
   return (
     <Wrapper>
@@ -130,7 +195,13 @@ const StartAssignment = () => {
                 />
               )}
               <Stack direction="row" justifyContent="space-between" gap={10}>
-                <NormalButton buttonText="Previous" onPress={onPrevious} />
+                <NormalButton
+                  buttonText="Previous"
+                  onPress={onPrevious}
+                  // Disable previous if on first question
+                  // However, user might want to go back even from q1? No, logic is fine.
+                  // But previously I saw onPrevious handles logic.
+                />
                 <NormalButton
                   buttonText={isLastQuestion ? 'Review' : 'Next'}
                   onPress={onNext}

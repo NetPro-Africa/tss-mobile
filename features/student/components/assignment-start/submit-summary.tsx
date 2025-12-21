@@ -1,11 +1,14 @@
-import type { QuestionDataType } from '@/features/assignments/types';
 import { Colors } from '@/constants/Colors';
-import { MediumText, NormalText } from '@/features/shared/components/typography';
-import { Stack } from '@/features/shared/components/ui/stack';
+import type { QuestionDataType } from '@/features/assignments/types';
 import { NormalButton } from '@/features/shared/components/normal-button';
+import {
+  MediumText,
+  NormalText,
+} from '@/features/shared/components/typography';
+import { Stack } from '@/features/shared/components/ui/stack';
 import { useColorScheme } from '@/hooks/useColorScheme.web';
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 type Props = {
   questions: QuestionDataType[];
@@ -25,13 +28,23 @@ export const SubmitSummary = ({
   const colorScheme = useColorScheme();
   const cardBg = Colors[colorScheme ?? 'light'].card;
 
-  const renderItem = ({ item, index }: { item: QuestionDataType; index: number }) => {
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: QuestionDataType;
+    index: number;
+  }) => {
     const answer = answers[String(item.id)];
     let displayAnswer: string;
 
     if (item.question_type === 'multiple_choice') {
-      const selectedOption = item.question_options.find((opt) => opt.id === answer);
-      displayAnswer = selectedOption ? selectedOption.option_text : 'Not Answered';
+      const selectedOption = item.question_options.find(
+        (opt) => opt.id === answer
+      );
+      displayAnswer = selectedOption
+        ? selectedOption.option_text
+        : 'Not Answered';
     } else {
       displayAnswer = answer ? String(answer) : 'Not Answered';
     }
@@ -39,14 +52,14 @@ export const SubmitSummary = ({
     return (
       <View style={[styles.card, { backgroundColor: cardBg }]}>
         <Stack gap={6}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <MediumText>Question {index + 1}</MediumText>
-            <NormalButton
-              buttonText="Edit"
-              onPress={() => onEdit(index)}
-              style={{ paddingVertical: 4, paddingHorizontal: 10, minWidth: 60 }}
-              textStyle={{ fontSize: 12 }}
-            />
+
+            <NormalText onPress={() => onEdit(index)}>Edit</NormalText>
           </Stack>
           <NormalText style={{ opacity: 0.8 }} numberOfLines={2}>
             {item.question_text}
@@ -59,7 +72,9 @@ export const SubmitSummary = ({
               borderRadius: 6,
             }}
           >
-            <NormalText style={{ fontSize: 13, fontWeight: '600', opacity: 0.6 }}>
+            <NormalText
+              style={{ fontSize: 13, fontWeight: '600', opacity: 0.6 }}
+            >
               Your Answer:
             </NormalText>
             <NormalText style={{ fontSize: 14 }}>{displayAnswer}</NormalText>
@@ -78,11 +93,13 @@ export const SubmitSummary = ({
         keyExtractor={(item) => String(item.id)}
         contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
         showsVerticalScrollIndicator={false}
-      />
-      <NormalButton
-        buttonText={isSubmitting ? 'Submitting...' : 'Submit Assignment'}
-        onPress={onSubmit}
-        disabled={isSubmitting}
+        ListFooterComponent={() => (
+          <NormalButton
+            buttonText={isSubmitting ? 'Submitting...' : 'Submit Assignment'}
+            onPress={onSubmit}
+            disabled={isSubmitting}
+          />
+        )}
       />
     </Stack>
   );

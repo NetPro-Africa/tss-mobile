@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { AssignmentResponse, TakeTestType } from '../assignments/types';
+import {
+  AssignmentResponse,
+  SemesterType,
+  TakeTestType,
+} from '../assignments/types';
 import { baseUrl } from '../shared/constants';
 import {
   AttendanceResponse,
@@ -233,6 +237,24 @@ export const takeAssignment = async ({
       }
     );
     return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`${error}`);
+  }
+};
+
+export const getSemesters = async (token: string) => {
+  try {
+    const { data } = await axios.get<SemesterType>(
+      `${baseUrl}/common/semesters`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return data.data;
   } catch (error) {
     console.log(error);
     throw new Error(`${error}`);

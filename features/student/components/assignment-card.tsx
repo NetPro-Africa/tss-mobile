@@ -9,27 +9,33 @@ import {
   MediumText,
   NormalText,
 } from '@/features/shared/components/typography';
+import { CustomPressable } from '@/features/shared/components/ui/custom-pressable';
 import { Stack } from '@/features/shared/components/ui/stack';
 import { colors } from '@/features/shared/constants';
-import { changeFirstLetterToCapital } from '@/features/shared/utils';
+import {
+  changeFirstLetterToCapital,
+  changeRemoveAllUnderScore,
+} from '@/features/shared/utils';
 import { format } from 'date-fns';
-import { Link } from 'expo-router';
+import { router } from 'expo-router';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 type Props = {
   item: AssignmentItemType;
+  navigate?: boolean;
 };
 
-export const AssignmentCard = ({ item }: Props) => {
+export const AssignmentCard = ({ item, navigate }: Props) => {
   const open = format(item.setassignment.opendate, 'P HH:mm');
   const close = format(item.setassignment.closedate, 'P HH:mm');
-
+  const onPress = () => {
+    router.push(
+      `/assignment/view?id=${item.setassignment.id}&student=${item.student.id}`
+    );
+  };
   return (
-    <Link
-      href={`/assignment/view?id=${item.setassignment.id}&student=${item.student.id}`}
-      asChild
-    >
+    <CustomPressable onPress={onPress} disabled={!navigate}>
       <Card style={styles.card}>
         <CardContent>
           <CardHeader style={{ flexDirection: 'column' }}>
@@ -94,7 +100,9 @@ export const AssignmentCard = ({ item }: Props) => {
                 }}
               >
                 <NormalText style={{ color: colors.white }}>
-                  {changeFirstLetterToCapital(item.status)}
+                  {changeRemoveAllUnderScore(
+                    changeFirstLetterToCapital(item.status)
+                  )}
                 </NormalText>
               </View>
               <View style={{ flex: 1 }}>
@@ -106,13 +114,13 @@ export const AssignmentCard = ({ item }: Props) => {
           </CardFooter>
         </CardContent>
       </Card>
-    </Link>
+    </CustomPressable>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.white,
-    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+    // backgroundColor: colors.white,
+    // boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
   },
 });
