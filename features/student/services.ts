@@ -184,6 +184,8 @@ export const fetchResult = async ({
     typeof page !== 'undefined' && typeof limit !== 'undefined'
       ? `?page=${page}&limit=${limit}`
       : '';
+  console.log({ query, session_id, semester_id });
+
   const { data } = await axios.get<ResultApiResponse>(
     `${baseUrl}/parents/child-results/${id}${query}&session_id=${session_id}&semester_id=${semester_id}`,
     {

@@ -35,7 +35,11 @@ export const AssignmentCard = ({ item, navigate }: Props) => {
     );
   };
   return (
-    <CustomPressable onPress={onPress} disabled={!navigate}>
+    <CustomPressable
+      onPress={onPress}
+      disabled={!navigate}
+      style={{ flex: 1, width: '100%' }}
+    >
       <Card style={styles.card}>
         <CardContent>
           <CardHeader style={{ flexDirection: 'column' }}>
@@ -122,5 +126,6 @@ const styles = StyleSheet.create({
   card: {
     // backgroundColor: colors.white,
     // boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+    width: '100%',
   },
 });

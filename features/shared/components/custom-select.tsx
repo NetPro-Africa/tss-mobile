@@ -1,10 +1,9 @@
-import { Text } from 'react-native';
+import { Text, useColorScheme } from 'react-native';
 import * as DropdownMenu from 'zeego/dropdown-menu';
 
 import { Colors } from '@/constants/Colors';
 import { NormalText } from '@/features/shared/components/typography';
 import { Stack } from '@/features/shared/components/ui/stack';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import { Entypo } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
 

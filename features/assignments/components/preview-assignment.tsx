@@ -5,8 +5,7 @@ import {
   NormalText,
 } from '@/features/shared/components/typography';
 import { Stack } from '@/features/shared/components/ui/stack';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, useColorScheme } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { Answer, QuestionType } from '../types';
 import { PreviewQuestion } from './preview-question';

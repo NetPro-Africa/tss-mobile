@@ -9,9 +9,9 @@ import {
 } from '@/features/shared/components/typography';
 import { Header } from '@/features/shared/components/ui/header';
 import { Stack } from '@/features/shared/components/ui/stack';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
+
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, useColorScheme, View } from 'react-native';
 
 const NewsDetails = () => {
   const news = useNews((state) => state.news);

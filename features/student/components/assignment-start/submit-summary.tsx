@@ -6,9 +6,8 @@ import {
   NormalText,
 } from '@/features/shared/components/typography';
 import { Stack } from '@/features/shared/components/ui/stack';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View, useColorScheme } from 'react-native';
 
 type Props = {
   questions: QuestionDataType[];

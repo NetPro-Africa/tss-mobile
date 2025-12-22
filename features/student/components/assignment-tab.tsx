@@ -1,9 +1,8 @@
 import { SegmentedControl } from '@/components/segmented-control';
 import { Colors } from '@/constants/Colors';
 import { MediumText } from '@/features/shared/components/typography';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useColorScheme } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { assignmentStatus } from '../types';
 import { FetchAssignments } from './fetch-assignments';

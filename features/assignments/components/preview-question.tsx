@@ -7,8 +7,7 @@ import {
 } from '@/features/shared/components/custom-card';
 import { MediumText } from '@/features/shared/components/typography';
 import { Stack } from '@/features/shared/components/ui/stack';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, useColorScheme } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { Answer, QuestionType } from '../types';
 

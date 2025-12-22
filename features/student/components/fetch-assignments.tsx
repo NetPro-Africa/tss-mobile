@@ -20,7 +20,6 @@ export const FetchAssignments = ({ status, navigate }: Props) => {
       status,
     }
   );
-  console.log({ data });
 
   const { width } = useWindowDimensions();
 

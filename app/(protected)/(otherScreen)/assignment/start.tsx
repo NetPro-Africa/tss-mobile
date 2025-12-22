@@ -9,7 +9,6 @@ import {
   MediumText,
   NormalText,
 } from '@/features/shared/components/typography';
-import { Button } from '@/features/shared/components/ui/button';
 import { Header } from '@/features/shared/components/ui/header';
 import { Stack } from '@/features/shared/components/ui/stack';
 import { Wrapper } from '@/features/shared/components/ui/wrapper';
@@ -21,9 +20,9 @@ import { MCOptions } from '@/features/student/components/assignment-start/mc-opt
 import { SubmitSummary } from '@/features/student/components/assignment-start/submit-summary';
 import { TheoryInput } from '@/features/student/components/assignment-start/theory-input';
 import { useAssignmentStore } from '@/features/student/store/use-assignment-store';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -42,12 +41,7 @@ const StartAssignment = () => {
   const answers = assignments[id]?.answers || {};
   const [showSummary, setShowSummary] = useState(false);
 
-  const {
-    mutateAsync,
-    isPending: isSubmitting,
-    isSuccess,
-    data: result,
-  } = useSubmitAssignment({
+  const { mutateAsync, isPending: isSubmitting } = useSubmitAssignment({
     id,
     studentId: student,
     answers,
@@ -94,58 +88,6 @@ const StartAssignment = () => {
     setShowSummary(false);
   };
   const isLastQuestion = currentIndex === questions.length - 1;
-
-  if (isSuccess && result) {
-    return (
-      <Wrapper>
-        <Header title="Submission Summary" />
-        <Stack
-          style={{
-            padding: 20,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          gap={20}
-        >
-          <MediumText style={{ fontSize: 22, textAlign: 'center' }}>
-            {result.message}
-          </MediumText>
-
-          <Stack
-            style={{
-              width: '100%',
-              backgroundColor: 'rgba(0,0,0,0.03)',
-              padding: 15,
-              borderRadius: 10,
-            }}
-            gap={10}
-          >
-            <Stack direction="row" justifyContent="space-between">
-              <NormalText>Status:</NormalText>
-              <MediumText style={{ textTransform: 'capitalize' }}>
-                {result.data.assignment.status}
-              </MediumText>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between">
-              <NormalText>Answers Saved:</NormalText>
-              <MediumText>{result.data.answers_saved}</MediumText>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between">
-              <NormalText>Submitted On:</NormalText>
-              <MediumText>{new Date().toLocaleDateString()}</MediumText>
-            </Stack>
-          </Stack>
-
-          <View style={{ height: 50 }}>
-            <Button
-              title="Back to Assignments"
-              onPress={() => router.replace('/assignments')}
-            />
-          </View>
-        </Stack>
-      </Wrapper>
-    );
-  }
 
   return (
     <Wrapper>

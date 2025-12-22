@@ -12,10 +12,9 @@ import {
 import { Stack } from '@/features/shared/components/ui/stack';
 import { colors } from '@/features/shared/constants';
 import { changeFirstLetterToCapital } from '@/features/shared/utils';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import CheckBox from '@react-native-community/checkbox';
 import React, { useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useColorScheme } from 'react-native';
 import Animated, { SlideInLeft } from 'react-native-reanimated';
 import { RFValue } from 'react-native-responsive-fontsize';
 

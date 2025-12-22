@@ -1,8 +1,8 @@
 import { Colors } from '@/constants/Colors';
 import { MediumText, NormalText } from '@/features/shared/components/typography';
 import { Stack } from '@/features/shared/components/ui/stack';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import React from 'react';
+import { useColorScheme } from 'react-native';
 
 type Props = {
   remainingSeconds: number;

@@ -1,8 +1,7 @@
 import { Colors } from '@/constants/Colors';
 import { MediumText } from '@/features/shared/components/typography';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import * as React from 'react';
-import { StyleProp, TextStyle } from 'react-native';
+import { StyleProp, TextStyle, useColorScheme } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 interface TitleProps {

@@ -16,6 +16,7 @@ export const useLogin = () => {
       // @ts-ignore
     },
     onError: (error) => {
+      console.log('error', JSON.stringify(error, null, 2));
       if (isAxiosError(error)) {
         const status = error.response?.status;
         const message = error.response?.data?.message || error.message;

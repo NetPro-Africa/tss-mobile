@@ -25,9 +25,10 @@ export const Results = ({ selectedTerm, selectedSession }: Props) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-
     isPending,
   } = useGetResult(10, selectedTerm, selectedSession);
+  console.log({ selectedSession, selectedTerm });
+
   const { width } = useWindowDimensions();
   if (isError) {
     throw new Error('Failed to load results');

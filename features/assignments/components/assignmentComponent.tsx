@@ -6,10 +6,9 @@ import {
 } from '@/features/shared/components/typography';
 import { Stack } from '@/features/shared/components/ui/stack';
 import { colors } from '@/features/shared/constants';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import CheckBox from '@react-native-community/checkbox';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useColorScheme } from 'react-native';
 import Animated, { SlideInLeft } from 'react-native-reanimated';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { QuestionType } from '../types';

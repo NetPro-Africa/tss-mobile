@@ -1,5 +1,5 @@
 import { useAuth } from '@/features/shared/store/use-auth';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { fetchResult } from '../services';
 import { useStudent } from '../store/useStudent';
 
@@ -30,5 +30,6 @@ export const useGetResult = (limit = 10, term = '', session = '') => {
       }
       return firstPageParam - 1;
     },
+    placeholderData: keepPreviousData,
   });
 };

@@ -10,7 +10,6 @@ import {
 } from '@/features/shared/components/typography';
 import { Stack } from '@/features/shared/components/ui/stack';
 import { Wrapper } from '@/features/shared/components/ui/wrapper';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import * as MailComposer from 'expo-mail-composer';
 import { useRouter } from 'expo-router';
@@ -24,6 +23,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  useColorScheme,
 } from 'react-native';
 import {
   ListItemLeadingIcon,

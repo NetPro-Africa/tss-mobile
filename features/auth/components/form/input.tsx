@@ -1,7 +1,6 @@
 import { Colors } from '@/constants/Colors';
 import { NormalText } from '@/features/shared/components/typography';
 import { colors } from '@/features/shared/constants';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import { Feather } from '@expo/vector-icons';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import {
@@ -16,6 +15,7 @@ import {
   TouchableOpacity,
   View,
   ViewStyle,
+  useColorScheme,
 } from 'react-native';
 
 type Props = TextInputProps & {

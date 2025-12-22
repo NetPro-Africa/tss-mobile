@@ -2,6 +2,7 @@ import axios from 'axios';
 import { baseUrl } from '../shared/constants';
 import { PaginateRequestType } from '../shared/types';
 import {
+  AssignmentResult,
   AssignmentsResponse,
   SubmitAssignmentResponseType,
   SubmitAssignmentsType,
@@ -43,4 +44,26 @@ export const submitAssignments = async ({
     }
   );
   return data;
+};
+
+export const fetchAssignmentsResult = async ({
+  token,
+  assignmentId,
+}: {
+  token: string;
+  assignmentId: string;
+}) => {
+  try {
+    const { data } = await axios.get<AssignmentResult>(
+      `${baseUrl}/parents/assignments/${assignmentId}/result`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data.data;
+  } catch (error) {
+    throw error;
+  }
 };

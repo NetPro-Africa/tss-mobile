@@ -1,8 +1,7 @@
 import { Colors } from '@/constants/Colors';
 import { constantStyles } from '@/features/shared/constants';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import { PropsWithChildren } from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { StyleProp, View, ViewStyle, useColorScheme } from 'react-native';
 
 type Props = {
   style?: StyleProp<ViewStyle>;

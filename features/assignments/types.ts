@@ -316,3 +316,73 @@ export type AssignmentType = {
   teacher_comment: string;
   total_score: number | null;
 };
+
+export type AssignmentResult = {
+  success: boolean;
+  message: string;
+  data: {
+    assignment: ResultAssignment;
+    student: ResultStudent;
+    student_answers: AssignmentAnswers[];
+    summary: ResultSummary;
+  };
+  meta: Meta;
+};
+
+export type ResultAssignment = {
+  id: string;
+  student_id: string;
+  setassignment_id: string;
+  subject_id: string;
+  details: string;
+  status: string;
+  start_time: string;
+  end_time: string;
+  total_score: number;
+  teacher_comments: string;
+  graded_at: string;
+  datecreated: string;
+};
+
+export type ResultStudent = {
+  id: number;
+  regno: string;
+  fname: string;
+  lname: string;
+  mname: string;
+  class_arm_id: number;
+};
+
+export type AssignmentAnswers = {
+  id: number;
+  assignment_id: number;
+  question_id: string;
+  selected_option_id: string;
+  theory_answer: null;
+  theory_score: null;
+  answered_at: string;
+  question: {
+    id: number;
+    question_text: string;
+    question_type: string;
+    points: number;
+    order_number: number;
+    question_options: QuestionsOptions[];
+  };
+};
+
+export type ResultSummary = {
+  total_questions: number;
+  correct_answers: number;
+  total_score: number;
+  max_possible_points: number;
+  percentage: number;
+  duration: string;
+  is_graded: boolean;
+};
+
+export type QuestionsOptions = {
+  id: number;
+  option_text: string;
+  is_correct: boolean;
+};

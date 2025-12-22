@@ -1,8 +1,6 @@
 import { BoldText, NormalText } from '@/features/shared/components/typography';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import { LinearGradient } from 'expo-linear-gradient';
-import { StyleSheet } from 'react-native';
-
+import { StyleSheet, useColorScheme } from 'react-native';
 export const FloatingGradient = () => {
   const colorScheme = useColorScheme();
   const fromColor =

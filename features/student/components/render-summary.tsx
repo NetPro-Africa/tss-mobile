@@ -13,10 +13,9 @@ import {
 import { CustomPressable } from '@/features/shared/components/ui/custom-pressable';
 import { Stack } from '@/features/shared/components/ui/stack';
 import { colors } from '@/features/shared/constants';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import { Entypo } from '@expo/vector-icons';
 import { format } from 'date-fns';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, useColorScheme } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 type Props = {

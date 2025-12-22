@@ -12,9 +12,8 @@ import {
 import { Stack } from '@/features/shared/components/ui/stack';
 import { colors } from '@/features/shared/constants';
 import type { ResultItem } from '@/features/student/types';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useColorScheme } from 'react-native';
 
 type Props = {
   item: ResultItem;

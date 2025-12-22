@@ -4,12 +4,7 @@ import type { AssignmentsResponse } from '@/features/assignments/types';
 import { Card, CardContent } from '@/features/shared/components/custom-card';
 import { LoadingCard } from '@/features/shared/components/loading-card';
 import { LoadingLists } from '@/features/shared/components/loading-lists';
-import {
-  MediumText,
-  NormalText,
-} from '@/features/shared/components/typography';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
-import { Dimensions, FlatList } from 'react-native';
+import { Dimensions, FlatList, useColorScheme } from 'react-native';
 import { AssignmentCard } from './assignment-card';
 
 const width = Dimensions.get('window').width;

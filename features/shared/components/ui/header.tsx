@@ -1,10 +1,9 @@
 import { Colors } from '@/constants/Colors';
 import { CustomPressable } from '@/features/shared/components/ui/custom-pressable';
 import { colors } from '@/features/shared/constants';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, useColorScheme } from 'react-native';
 import { NormalText } from '../typography';
 import { Stack } from './stack';
 

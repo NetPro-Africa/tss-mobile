@@ -1,5 +1,4 @@
 import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import React, { Children, ReactNode } from 'react';
 import {
   Dimensions,
@@ -8,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   ViewStyle,
+  useColorScheme,
 } from 'react-native';
 import { ThemedView } from './ThemedView';
 import { Stack } from './ui/stack';

@@ -7,9 +7,8 @@ import {
 } from '@/features/shared/components/typography';
 import { Stack } from '@/features/shared/components/ui/stack';
 import { colors } from '@/features/shared/constants';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import { AnimatePresence, MotiView } from 'moti';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, useColorScheme } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Theme } from 'react-native-calendars/src/types';
 import type { AttendanceResponse } from '../types';

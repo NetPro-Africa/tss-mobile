@@ -12,10 +12,9 @@ import {
 } from '@/features/shared/components/typography';
 import { Stack } from '@/features/shared/components/ui/stack';
 import { colors } from '@/features/shared/constants';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
 import { Feather } from '@expo/vector-icons';
 import * as Print from 'expo-print';
-import { Alert, FlatList, StyleSheet, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, View, useColorScheme } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { Answer, QuestionType, SubmitAssignmentType } from '../types';
 

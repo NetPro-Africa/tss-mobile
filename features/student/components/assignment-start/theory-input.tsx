@@ -1,8 +1,6 @@
 import { Colors } from '@/constants/Colors';
 import { Stack } from '@/features/shared/components/ui/stack';
-import { useColorScheme } from '@/hooks/useColorScheme.web';
-import React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput, useColorScheme } from 'react-native';
 
 type Props = {
   value?: string;
