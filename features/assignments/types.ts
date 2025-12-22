@@ -173,6 +173,22 @@ export type SemesterType = {
   meta: Meta;
 };
 
+export type SessionType = {
+  success: boolean;
+  message: string;
+  data: {
+    sessions: Session[];
+  };
+  meta: Meta;
+};
+
+export type Session = {
+  id: number;
+  name: string;
+  user_id: number;
+  createdate: string;
+};
+
 export type Semester = {
   id: number;
   name: string;

@@ -3,13 +3,20 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchResult } from '../services';
 import { useStudent } from '../store/useStudent';
 
-export const useGetResult = (limit = 10) => {
+export const useGetResult = (limit = 10, term = '', session = '') => {
   const token = useAuth((state) => state.user?.token!);
   const student = useStudent((state) => state.student!);
   return useInfiniteQuery({
-    queryKey: ['result', token, student.id, limit],
+    queryKey: ['results', token, student.id, limit, term, session],
     queryFn: async ({ pageParam: page }) =>
-      fetchResult({ token, id: student.id, page, limit }),
+      fetchResult({
+        token,
+        id: student.id,
+        page,
+        limit,
+        semester_id: term,
+        session_id: session,
+      }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, _, lastPageParam) => {
       if (lastPage.results.length === 0) {

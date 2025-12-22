@@ -12,12 +12,15 @@ import {
   VerifyOtpType,
 } from './types';
 export const login = async ({ email, password }: LoginType) => {
-  const { data } = await axios.post<LoginResponseType>(
-    `${baseUrl}/auth/login`,
-    { username: email, password }
-  );
-
-  return data;
+  try {
+    const { data } = await axios.post<LoginResponseType>(
+      `${baseUrl}/auth/login`,
+      { username: email, password }
+    );
+    return data;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
 };
 
 export const verifyLoginOtp = async ({
@@ -27,14 +30,18 @@ export const verifyLoginOtp = async ({
   email: string;
   otp: string;
 }) => {
-  const { data } = await axios.post<VerifyLoginOtpSuccessResponseType>(
-    `${baseUrl}/auth/verify-login-otp`,
-    {
-      username: email,
-      otp,
-    }
-  );
-  return data;
+  try {
+    const { data } = await axios.post<VerifyLoginOtpSuccessResponseType>(
+      `${baseUrl}/auth/verify-login-otp`,
+      {
+        username: email,
+        otp,
+      }
+    );
+    return data;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
 };
 
 export const currentUser = async (token: string) => {
@@ -104,18 +111,20 @@ export const deleteAccount = async ({ token }: { token: string }) => {
 };
 
 export const logout = async ({ token }: { token: string }) => {
-  console.log({ token });
-
-  const { data } = await axios.post<SuccessResponseType>(
-    `${baseUrl}/auth/logout`,
-    undefined,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return data;
+  try {
+    const { data } = await axios.post<SuccessResponseType>(
+      `${baseUrl}/auth/logout`,
+      undefined,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
 };
 export const refreshToken = async ({ token }: { token: string }) => {
   const { data } = await axios.post<SuccessResponseType>(

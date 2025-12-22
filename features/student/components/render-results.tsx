@@ -1,36 +1,36 @@
-import { EmptyUi } from '@/features/shared/components/empty-ui';
 import { LoadingCard } from '@/features/shared/components/loading-card';
 import { LoadingLists } from '@/features/shared/components/loading-lists';
-import { NormalText } from '@/features/shared/components/typography';
-import { useGetResult } from '@/features/student/api/use-results';
-import React from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  useWindowDimensions,
-  View,
-} from 'react-native';
-import { ResultItemCard } from './result-item';
-export const RenderResults = () => {
-  const {
-    data,
-    isFetching,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
+import React, { useState } from 'react';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 
-    isPending,
-  } = useGetResult();
+import { Menu } from '@/features/shared/components/menu';
+import { useGetSession, useGetTerms } from '../api/use-get-terms';
+import { Results } from './results';
+
+export const RenderResults = () => {
+  const [selectedTerm, setSelectedTerm] = useState('');
+  const [selectedSession, setSelectedSession] = useState('');
+
+  const {
+    data: terms,
+    isPending: isTermPending,
+    isError: isTermError,
+  } = useGetTerms();
+
+  const {
+    data: sessions,
+    isPending: isSessionPending,
+    isError: isSessionError,
+  } = useGetSession();
 
   const { width } = useWindowDimensions();
 
-  if (isError) {
+  if (isTermError || isSessionError) {
     throw new Error('Failed to load results');
   }
 
   const cardWidth = width - 30;
-  if (isPending) {
+  if (isTermPending || isSessionPending) {
     return (
       <LoadingLists
         renderItem={() => <LoadingCard height={200} width={cardWidth} />}
@@ -39,46 +39,37 @@ export const RenderResults = () => {
     );
   }
 
-  const totalPages = data?.pages.flatMap((d) => d.pagination.total_pages)[0];
-  const pageParams = data.pageParams[data.pageParams.length - 1] as number;
-
-  const finalPage = pageParams === totalPages;
-  const onEndReached = () => {
-    if (!finalPage && hasNextPage && !isFetching) {
-      fetchNextPage();
-    }
-  };
   return (
-    <FlatList
-      data={data?.pages.flatMap((d) => d.results)}
-      renderItem={({ item }) => <ResultItemCard item={item} />}
-      keyExtractor={(item, i) => item.toString() + i}
-      contentContainerStyle={{
-        gap: 15,
-        paddingHorizontal: 15,
-        paddingBottom: 100,
-      }}
-      onEndReachedThreshold={0.4}
-      onEndReached={onEndReached}
-      ListEmptyComponent={() => <EmptyUi message="No results yet" />}
-      showsVerticalScrollIndicator={false}
-      ListFooterComponent={() =>
-        isFetchingNextPage ? (
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingVertical: 20,
-            }}
-          >
-            <ActivityIndicator />
-          </View>
-        ) : finalPage ? (
-          <NormalText style={{ textAlign: 'center', paddingVertical: 20 }}>
-            Nothing more to load
-          </NormalText>
-        ) : null
-      }
-    />
+    <View style={{ gap: 10 }}>
+      <View style={styles.menuContainer}>
+        <Menu
+          data={terms.semesters.map((term) => ({
+            label: term.name,
+            value: term.id.toString(),
+          }))}
+          onSelect={setSelectedTerm}
+          selectedValue={selectedTerm}
+        />
+        <Menu
+          data={sessions.sessions.map((session) => ({
+            label: session.name,
+            value: session.id.toString(),
+          }))}
+          onSelect={setSelectedSession}
+          selectedValue={selectedSession}
+        />
+      </View>
+      <Results
+        selectedTerm={selectedTerm || terms.semesters[0].id.toString()}
+        selectedSession={selectedSession || sessions.sessions[0].id.toString()}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  menuContainer: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+});

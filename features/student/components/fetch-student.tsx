@@ -41,7 +41,6 @@ export const FetchStudent = () => {
     name: item.fname + ' ' + item.lname,
     class: item.department.name,
   }));
-  console.log({ student: data[0] });
 
   return (
     <Stack direction="row" justifyContent="space-between" mt={5}>

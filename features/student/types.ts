@@ -145,6 +145,8 @@ export type FetchResult = {
   token?: string;
   page?: number;
   limit?: number;
+  session_id: string;
+  semester_id: string;
 };
 
 export type FetchSessionType = {

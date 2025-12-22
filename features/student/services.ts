@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import {
   AssignmentResponse,
   SemesterType,
+  SessionType,
   TakeTestType,
 } from '../assignments/types';
 import { baseUrl } from '../shared/constants';
@@ -28,16 +29,29 @@ export const fetchStudent = async ({
 }: {
   token: string;
 }): Promise<ChildrenResponse> => {
-  const { data } = await axios.get<ChildrenResponse>(
-    `${baseUrl}/parents/children`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  try {
+    const { data } = await axios.get<ChildrenResponse>(
+      `${baseUrl}/parents/children`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-  return data;
+    return data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      const message = error.response?.data?.message || error.message;
+      const status = error.response?.status;
+      console.log('message', message);
+      console.log('status', status);
+    } else {
+      console.log('error', JSON.stringify(error));
+    }
+
+    throw new Error(`${error}`);
+  }
 };
 
 export const fetchAttendance = async ({
@@ -158,13 +172,20 @@ export const fetchResultSheet = async ({
     throw new Error(`${error}`);
   }
 };
-export const fetchResult = async ({ token, id, page, limit }: FetchResult) => {
+export const fetchResult = async ({
+  token,
+  id,
+  page,
+  limit,
+  session_id,
+  semester_id,
+}: FetchResult) => {
   const query =
     typeof page !== 'undefined' && typeof limit !== 'undefined'
       ? `?page=${page}&limit=${limit}`
       : '';
   const { data } = await axios.get<ResultApiResponse>(
-    `${baseUrl}/parents/child-results/${id}${query}`,
+    `${baseUrl}/parents/child-results/${id}${query}&session_id=${session_id}&semester_id=${semester_id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -243,10 +264,27 @@ export const takeAssignment = async ({
   }
 };
 
-export const getSemesters = async (token: string) => {
+export const getTerms = async (token: string) => {
   try {
     const { data } = await axios.get<SemesterType>(
       `${baseUrl}/common/semesters`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return data.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`${error}`);
+  }
+};
+export const getSessions = async (token: string) => {
+  try {
+    const { data } = await axios.get<SessionType>(
+      `${baseUrl}/common/sessions`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
